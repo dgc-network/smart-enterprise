@@ -251,8 +251,8 @@ if (!class_exists('badges')) {
                 if ($_GET['view_mode']=='user_badges') return self::user_badges($_GET['_id']);
             }
 
-            if( isset($_POST['edit_mode']) ) {
-                return self::edit_mode( $_POST['edit_mode'], $_POST['_id'] );
+            if( isset($_GET['edit_mode']) ) {
+                return self::edit_mode( $_GET['edit_mode'], $_GET['_id'] );
             }            
 
             /**
@@ -266,7 +266,7 @@ if (!class_exists('badges')) {
             $output .= '<figure class="wp-block-table"><table><tbody>';
             $output .= '<tr><td>證照紀錄</td>';
             foreach ($badges as $index => $badge) {
-                $output .= '<td><a href="?view_mode=badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
+                $output .= '<td><a href="?edit_mode=badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
             }
             $output .= '</tr>';
             foreach ($members as $index => $member) {
@@ -284,7 +284,7 @@ if (!class_exists('badges')) {
             }
             $output .= '</tbody></table></figure>';
 
-            $output .= '<form method="post">';
+            $output .= '<form method="get">';
             $output .= '<div class="wp-block-buttons">';
             $output .= '<div class="wp-block-button">';
             $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="edit_mode">';
