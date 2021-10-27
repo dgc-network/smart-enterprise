@@ -4,7 +4,9 @@ Please install the WooCommerce plug-in first before using the smart enterprise p
 
 ## Using
 Use shortcode [badge-list]
+
 The Badges came from WooCommerce products with Badges category
+
 The Users came from Wordpress registered users
 
 ## ToDo:
