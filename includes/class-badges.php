@@ -121,7 +121,7 @@ if (!class_exists('badges')) {
 
             if ($_id==null){
                 if ($_mode=='Create') {} else 
-                return '_id is required';
+                return 'id is required';
             }
 /*
             if( isset($_POST['create_action']) ) {
@@ -265,7 +265,7 @@ if (!class_exists('badges')) {
                 if ($_GET['view_mode']=='user_badges') return self::user_badges($_GET['_id']);
             }
 
-            if( isset($_GET['edit_mode']) ) {
+            if( isset($_POST['edit_mode']) ) {
 /*                
                 if ($_GET['edit_mode']=='Create') {
                     add_product_to_cart();
@@ -281,7 +281,6 @@ if (!class_exists('badges')) {
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
-            $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}member_badges WHERE student_id = {$results[$index]->ID} AND badge_id = {$loop->post->ID}", OBJECT );
             $output  = '<h2>教師考取相關證照紀錄</h2>';
             $output .= '<figure class="wp-block-table"><table><tbody>';
             $output .= '<tr><td>證照紀錄</td>';
@@ -303,47 +302,11 @@ if (!class_exists('badges')) {
                 $output .= '</tr>';
             }
             $output .= '</tbody></table></figure>';
-/*
-            $args = array(
-                'post_type'     => 'product',
-                'product_cat'   => 'Badges',
-                'posts_per_page'=> 200,
-                'order'         => 'ASC'
-            );
-                
-            $output  = '<h2>教師考取相關證照紀錄</h2>';
-            $output .= '<figure class="wp-block-table"><table><tbody>';
-            $output .= '<tr><td>證照紀錄</td>';
-            $loop = new WP_Query( $args );
-            while ( $loop->have_posts() ) : $loop->the_post();
-                global $product;
-                $output .= '<td><a href="?view_mode=badge&_id='.$product->get_id().'">'.$product->get_name().'</a></td>';
-            endwhile;
-            $output .= '</tr>';
 
-            $results = get_users();
-            foreach ($results as $index => $result) {
-                $output .= '<tr>';
-                $output .= '<td><a href="?view_mode=user_badges&_id='.$results[$index]->ID.'">'.$results[$index]->display_name.'</a></td>';
-                while ( $loop->have_posts() ) : $loop->the_post();
-                    global $wpdb;
-                    $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}user_badges WHERE student_id = {$results[$index]->ID} AND badge_id = {$loop->post->ID}", OBJECT );
-                    if (empty($row)) {
-                        $output .= '<td></td>';
-                    } else {
-                        $image = wp_get_attachment_image_src( get_post_thumbnail_id( $loop->post->ID ), 'single-post-thumbnail' );
-                        $output .= '<td><img src="'.$image[0].'" data-id="'.$loop->post->ID.'"></td>';
-                    }
-                endwhile;
-                $output .= '</tr>';
-            }
-            wp_reset_query();
-            $output .= '</tbody></table></figure>';
-*/
-            $output .= '<form method="get">';
+            $output .= '<form method="post">';
             $output .= '<div class="wp-block-buttons">';
             $output .= '<div class="wp-block-button">';
-            $output .= '<a class="wp-block-button__link" href="/wp-admin/post-new.php?post_type=product">Create</a>';
+            $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="edit_mode">';
             $output .= '</div>';
             $output .= '<div class="wp-block-button">';
             $output .= '<a class="wp-block-button__link" href="/">Cancel</a>';
