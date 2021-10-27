@@ -121,6 +121,32 @@ if (!class_exists('badges')) {
             /**
              * List Mode
              */
+            global $wpdb;
+            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
+            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
+            $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}member_badges WHERE student_id = {$results[$index]->ID} AND badge_id = {$loop->post->ID}", OBJECT );
+            $output  = '<h2>教師考取相關證照紀錄</h2>';
+            $output .= '<figure class="wp-block-table"><table><tbody>';
+            $output .= '<tr><td>證照紀錄</td>';
+            foreach ($badges as $index => $badge) {
+                $output .= '<td><a href="?view_mode=badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
+            }
+            $output .= '</tr>';
+            foreach ($members as $index => $member) {
+                $output .= '<tr>';
+                $output .= '<td><a href="?view_mode=user_badges&_id='.$member->member_id.'">'.$member->member_name.'</a></td>';
+                foreach ($badges as $index => $badge) {
+                    $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}member_badges WHERE member_id = {$member->member_id} AND badge_id = {$badge->badge_id}", OBJECT );
+                    if (empty($row)) {
+                        $output .= '<td></td>';
+                    } else {
+                        $output .= '<td><img src="'.$badge->image_link.'" data-id="'.$badge->badge_id.'"></td>';
+                    }
+                }
+                $output .= '</tr>';
+            }
+            $output .= '</tbody></table></figure>';
+/*
             $args = array(
                 'post_type'     => 'product',
                 'product_cat'   => 'Badges',
@@ -156,7 +182,7 @@ if (!class_exists('badges')) {
             }
             wp_reset_query();
             $output .= '</tbody></table></figure>';
-
+*/
             $output .= '<form method="get">';
             $output .= '<div class="wp-block-buttons">';
             $output .= '<div class="wp-block-button">';
@@ -219,6 +245,37 @@ if (!class_exists('badges')) {
             global $wpdb;
             $charset_collate = $wpdb->get_charset_collate();
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+            $sql = "CREATE TABLE `{$wpdb->prefix}members` (
+                member_id int NOT NULL AUTO_INCREMENT,
+                member_name varchar(255),
+                member_title varchar(255),
+                member_link varchar(255),
+                is_teacher boolean,
+                txid varchar(255),
+                PRIMARY KEY  (member_id)
+            ) $charset_collate;";        
+            dbDelta($sql);
+
+            $sql = "CREATE TABLE `{$wpdb->prefix}badges` (
+                badge_id int NOT NULL AUTO_INCREMENT,
+                badge_title varchar(255),
+                badge_link varchar(255),
+                image_link varchar(255),
+                txid varchar(255),
+                PRIMARY KEY  (badge_id)
+            ) $charset_collate;";        
+            dbDelta($sql);
+
+            $sql = "CREATE TABLE `{$wpdb->prefix}member_badges` (
+                m_b_id int NOT NULL AUTO_INCREMENT,
+                member_id int NOT NULL,
+                badge_id int NOT NULL,
+                txid varchar(255),
+                PRIMARY KEY  (m_b_id)
+            ) $charset_collate;";        
+            dbDelta($sql);
+
             $sql = "CREATE TABLE `{$wpdb->prefix}user_badges` (
                 u_b_id int NOT NULL AUTO_INCREMENT,
                 student_id int NOT NULL,
