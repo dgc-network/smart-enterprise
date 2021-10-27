@@ -163,9 +163,8 @@ if (!class_exists('badges')) {
                     $where = array('course_id' => $insert_id);
                     $wpdb->update( $table, $data, $where );
                 }
-
+*/
                 ?><script>window.location='/badges'</script><?php
-*/                
             }
 
             if( isset($_POST['update_action']) ) {
@@ -187,27 +186,27 @@ if (!class_exists('badges')) {
                 } else {
 
                     global $wpdb;
-                    $table = $wpdb->prefix.'calendars';
+                    $table = $wpdb->prefix.'badges';
                     $data = array(
-                        'event_title' => $_POST['_event_title'],
-                        'event_begin' => $_POST['_event_begin'],
-                        'event_end' => $_POST['_event_end'],
+                        'badge_title' => $_POST['_badge_title'],
+                        'badge_link' => $_POST['_badge_link'],
+                        'image_link' => $_POST['_image_link'],
                         //'txid' => $op_result['txid'], 
                     );
-                    $where = array('event_id' => $_POST['_event_id']);
+                    $where = array('badge_id' => $_POST['_id']);
                     $wpdb->update( $table, $data, $where );
                 }
 
-                ?><script>window.location='/calendars'</script><?php
+                ?><script>window.location='/badges'</script><?php
             }
         
             if( isset($_POST['delete_action']) ) {
         
                 global $wpdb;
-                $table = $wpdb->prefix.'calendars';
-                $where = array('event_id' => $_POST['_event_id']);
+                $table = $wpdb->prefix.'badges';
+                $where = array('badge_id' => $_POST['_id']);
                 $deleted = $wpdb->delete( $table, $where );
-                ?><script>window.location='/calendars'</script><?php
+                ?><script>window.location='/cbadges'</script><?php
             }
 
             /** 
@@ -215,7 +214,8 @@ if (!class_exists('badges')) {
              */
             global $wpdb;
             $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}badges WHERE badge_id = {$_id}", OBJECT );
-            $output  = '<form method="post">';
+            $output  = '<h2>證照維護</h2>';
+            $output .= '<form method="post">';
             $output .= '<figure class="wp-block-table"><table><tbody>';
             $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title" value="'.$row->badge_title.'"></td></tr>';
             $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link" value="'.$row->badge_link.'"></td></tr>';
