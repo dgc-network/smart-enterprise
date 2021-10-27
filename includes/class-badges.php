@@ -163,8 +163,9 @@ if (!class_exists('badges')) {
                     $where = array('course_id' => $insert_id);
                     $wpdb->update( $table, $data, $where );
                 }
-*/
+
                 ?><script>window.location='/badges'</script><?php
+*/                
             }
 
             if( isset($_POST['update_action']) ) {
