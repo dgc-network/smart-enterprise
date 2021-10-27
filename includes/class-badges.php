@@ -126,7 +126,7 @@ if (!class_exists('badges')) {
 
             if( isset($_POST['create_action']) ) {
         
-                return 'I am here';
+                //return 'I am here';
                 global $wpdb;          
                 $table = $wpdb->prefix.'badges';
                 $data = array(
