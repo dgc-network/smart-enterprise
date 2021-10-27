@@ -126,6 +126,7 @@ if (!class_exists('badges')) {
 
             if( isset($_POST['create_action']) ) {
         
+                return 'I am here';
                 global $wpdb;          
                 $table = $wpdb->prefix.'badges';
                 $data = array(
@@ -258,7 +259,7 @@ if (!class_exists('badges')) {
              */
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
-            return var_dump($badges);
+            //return var_dump($badges);
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
             $output  = '<h2>教師考取相關證照紀錄</h2>';
             $output .= '<figure class="wp-block-table"><table><tbody>';
@@ -345,6 +346,16 @@ if (!class_exists('badges')) {
             $charset_collate = $wpdb->get_charset_collate();
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
+            $sql = "CREATE TABLE `{$wpdb->prefix}badges` (
+                badge_id int NOT NULL AUTO_INCREMENT,
+                badge_title varchar(255),
+                badge_link varchar(255),
+                image_link varchar(255),
+                txid varchar(255),
+                PRIMARY KEY  (badge_id)
+            ) $charset_collate;";        
+            dbDelta($sql);
+
             $sql = "CREATE TABLE `{$wpdb->prefix}members` (
                 member_id int NOT NULL AUTO_INCREMENT,
                 member_name varchar(255),
@@ -353,16 +364,6 @@ if (!class_exists('badges')) {
                 is_teacher boolean,
                 txid varchar(255),
                 PRIMARY KEY  (member_id)
-            ) $charset_collate;";        
-            dbDelta($sql);
-
-            $sql = "CREATE TABLE `{$wpdb->prefix}badges` (
-                badge_id int NOT NULL AUTO_INCREMENT,
-                badge_title varchar(255),
-                badge_link varchar(255),
-                image_link varchar(255),
-                txid varchar(255),
-                PRIMARY KEY  (badge_id)
             ) $charset_collate;";        
             dbDelta($sql);
 
