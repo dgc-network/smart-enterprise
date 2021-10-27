@@ -134,7 +134,7 @@ if (!class_exists('badges')) {
                     'badge_link' => $_POST['_badge_link'],
                     'image_link' => $_POST['_image_link'],
                 );
-                $format = array('%d', '%s', '%s');
+                $format = array('%s', '%s', '%s');
                 $insert_id = $wpdb->insert($table, $data, $format);
 /*
                 $CreateCourseAction = new CreateCourseAction();                
