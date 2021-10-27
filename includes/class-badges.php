@@ -258,6 +258,7 @@ if (!class_exists('badges')) {
              */
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
+            return var_dump($badges);
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
             $output  = '<h2>教師考取相關證照紀錄</h2>';
             $output .= '<figure class="wp-block-table"><table><tbody>';
