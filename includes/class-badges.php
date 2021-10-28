@@ -396,7 +396,7 @@ if (!class_exists('badges')) {
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
-            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
+            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
             return var_dump($members);
             if ( $isTeacher ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
