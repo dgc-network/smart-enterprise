@@ -401,6 +401,7 @@ if (!class_exists('badges')) {
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
+            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
             if ( $isTeacher ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
             } else {
@@ -529,7 +530,7 @@ if (!class_exists('badges')) {
                 member_name varchar(255),
                 member_title varchar(255),
                 member_link varchar(255),
-                is_teacher boolean,
+                is_teacher boolean DEFAULT false,
                 txid varchar(255),
                 PRIMARY KEY  (member_id)
             ) $charset_collate;";        
