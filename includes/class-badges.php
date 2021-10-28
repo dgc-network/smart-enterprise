@@ -260,8 +260,9 @@ if (!class_exists('badges')) {
                         'member_name' => $_POST['_member_name'],
                         'member_title' => $_POST['_member_title'],
                         'member_link' => $_POST['_member_link'],
+                        'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
                     );
-                    $format = array('%s', '%s', '%s');
+                    $format = array('%s', '%s', '%s', '%d');
                     $insert_id = $wpdb->insert($table, $data, $format);
     /*
                     $CreateCourseAction = new CreateCourseAction();                
@@ -316,6 +317,7 @@ if (!class_exists('badges')) {
                             'member_name' => $_POST['_member_name'],
                             'member_title' => $_POST['_member_title'],
                             'member_link' => $_POST['_member_link'],
+                            'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
                             //'txid' => $op_result['txid'], 
                         );
                         $where = array('member_id' => $_id);
@@ -345,6 +347,9 @@ if (!class_exists('badges')) {
             $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name" value="'.$row->member_name.'"></td></tr>';
             $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title" value="'.$row->member_title.'"></td></tr>';
             $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_member_link" value="'.$row->member_link.'"></td></tr>';
+            $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
+            if ($row->is_teacher) $output .= ' value="true" checked';
+            $output .= '></td>';
             $output .= '</tbody></table></figure>';
     
             if( $_mode=='Create' ) {
