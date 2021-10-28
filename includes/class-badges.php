@@ -396,7 +396,7 @@ if (!class_exists('badges')) {
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
-            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
+            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
             if ( $isTeacher ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
             } else {
@@ -424,7 +424,7 @@ if (!class_exists('badges')) {
             }
             $output .= '</tbody></table></figure>';
             
-            if ( is_admin() ) {} else {
+            if ( is_admin() ) {
 
                 $output .= '<form method="get">';
                 $output .= '<div class="wp-block-buttons">';
