@@ -1,13 +1,8 @@
 # smart-enterprise
 ## Install
-Please install the WooCommerce plug-in first before using the smart enterprise plug-in
+Please install the smart-enterprise plug-in on Wordpress web site first before using
 
 ## Using
-Use shortcode [badge-list]
+Use shortcode [teacher-badge-list] or [student-badge-list]
 
-The Badges came from WooCommerce products with Badges category
-
-The Users came from Wordpress registered users
-
-## ToDo:
-Identify the role between Teacher and Student
+## Todo:
