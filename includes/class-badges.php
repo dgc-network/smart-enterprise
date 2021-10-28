@@ -372,7 +372,7 @@ if (!class_exists('badges')) {
 
         function teacher_list_mode() {
             $isTeacher = true;
-            self::list_mode( $isTeacher );
+            return self::list_mode( $isTeacher );
         }
 
         function list_mode( $isTeacher = false ) {
