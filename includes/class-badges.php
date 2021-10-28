@@ -10,8 +10,6 @@ if (!class_exists('badges')) {
          * Class constructor
          */
         public function __construct() {
-            //add_shortcode('badge_list', __CLASS__ . '::list_mode');
-            //add_shortcode('badge-list', __CLASS__ . '::list_mode');
             add_shortcode('teacher-badge-list', __CLASS__ . '::teacher_list_mode');
             add_shortcode('student-badge-list', __CLASS__ . '::student_list_mode');
             self::create_tables();
@@ -23,13 +21,10 @@ if (!class_exists('badges')) {
                 return '<div>ID is required</div>';
             }
 
-            /** 
-             * submit
-             */
             if( isset($_POST['submit_action']) ) {        
 
                 global $wpdb;
-                $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}member_badges WHERE m_b_id = {$_id}", OBJECT );
+                $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}member_badges WHERE member_id = {$_id}", OBJECT );
                 foreach ($results as $index => $result) {
                     if (( $_POST['_badge_id_'.$index]=='select_delete' )){
                         $table = $wpdb->prefix.'member_badges';
@@ -72,10 +67,9 @@ if (!class_exists('badges')) {
             $output .= '<tr><td>'.'Name:'.'</td><td>'.$row->member_name.'</td></tr>';
             $output .= '<tr><td>'.'Title:'.'</td><td>'.$row->member_title.'</td></tr>';
             $output .= '</tbody></table></figure>';
-            //return $output;
 
             /** 
-             * member_badges relationship
+             * member_badges body
              */
             global $wpdb;
             $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}member_badges WHERE member_id = {$_id}", OBJECT );
@@ -145,12 +139,10 @@ if (!class_exists('badges')) {
     
                     $op_result = OP_RETURN_send(OP_RETURN_SEND_ADDRESS, OP_RETURN_SEND_AMOUNT, $send_data);
     
-                    if (isset($op_result['error'])) {
-    
+                    if (isset($op_result['error'])) {    
                         $result_output = 'Error: '.$op_result['error']."\n";
                         return $result_output;
-                    } else {
-    
+                    } else {    
                         $table = $wpdb->prefix.'badges';
                         $data = array(
                             'txid' => $op_result['txid'], 
@@ -158,8 +150,6 @@ if (!class_exists('badges')) {
                         $where = array('course_id' => $insert_id);
                         $wpdb->update( $table, $data, $where );
                     }
-    
-                    ?><script>window.location=window.location.pathname</script><?php
 */                    
                 }
     
@@ -277,12 +267,10 @@ if (!class_exists('badges')) {
     
                     $op_result = OP_RETURN_send(OP_RETURN_SEND_ADDRESS, OP_RETURN_SEND_AMOUNT, $send_data);
     
-                    if (isset($op_result['error'])) {
-    
+                    if (isset($op_result['error'])) {    
                         $result_output = 'Error: '.$op_result['error']."\n";
                         return $result_output;
-                    } else {
-    
+                    } else {    
                         $table = $wpdb->prefix.'badges';
                         $data = array(
                             'txid' => $op_result['txid'], 
@@ -401,8 +389,6 @@ if (!class_exists('badges')) {
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
-            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
-            //return var_dump($members);
             if ( $isTeacher=='1' ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
             } else {
@@ -509,7 +495,6 @@ if (!class_exists('badges')) {
             dbDelta($sql);
         }        
     }
-    //if ( is_admin() )
     new badges();
 }
 ?>
