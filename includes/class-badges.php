@@ -22,7 +22,7 @@ if (!class_exists('badges')) {
 */            
         }
 
-        function user_badges( $_id=null ) {
+        function member_badges( $_id=null ) {
 
             if ($_id==null){
                 return '<div>ID is required</div>';
@@ -32,33 +32,33 @@ if (!class_exists('badges')) {
              * submit
              */
             if( isset($_POST['submit_action']) ) {        
-                $current_user_id = get_current_user_id();
+                //$current_user_id = get_current_user_id();
                 global $wpdb;
-                $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}user_badges WHERE u_b_id = {$_id}", OBJECT );
+                $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}member_badges WHERE m_b_id = {$_id}", OBJECT );
                 foreach ($results as $index => $result) {
                     if (( $_POST['_badge_id_'.$index]=='select_delete' )){
-                        $table = $wpdb->prefix.'user_badges';
+                        $table = $wpdb->prefix.'member_badges';
                         $where = array(
-                            'u_b_id' => $results[$index]->u_b_id
+                            'm_b_id' => $results[$index]->m_b_id
                         );
                         $wpdb->delete( $table, $where );    
                     } else {
-                        $table = $wpdb->prefix.'user_badges';
+                        $table = $wpdb->prefix.'member_badges';
                         $data = array(
                             'badge_id' => $_POST['_badge_id_'.$index],
                         );
                         $where = array(
-                            'u_b_id' => $results[$index]->u_b_id
+                            'm_b_id' => $results[$index]->m_b_id
                         );
                         $wpdb->update( $table, $data, $where );    
                     }
                 }
 
                 if ( !($_POST['_badge_id']=='no_select') ){
-                    $table = $wpdb->prefix.'user_badges';
+                    $table = $wpdb->prefix.'member_badges';
                     $data = array(
                         'badge_id' => $_POST['_badge_id'],
-                        'student_id' => $_POST['_student_id'],
+                        'member_id' => $_POST['_member_id'],
                     );
                     $format = array('%d', '%d');
                     $wpdb->insert($table, $data, $format);
@@ -67,13 +67,15 @@ if (!class_exists('badges')) {
             }
 
             /** 
-             * user_badges header
+             * member_badges header
              */
+            global $wpdb;
+            $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}members WHERE member_id = {$_id}", OBJECT );
             $output  = '<h2>個人認證項目</h2>';
             $output .= '<form method="post">';
             $output .= '<figure class="wp-block-table"><table><tbody>';
-            $output .= '<tr><td>'.'Name:'.'</td><td>'.get_userdata($_id)->display_name.'</td></tr>';
-            $output .= '<tr><td>'.'Email:'.'</td><td>'.get_userdata($_id)->user_email.'</td></tr>';
+            $output .= '<tr><td>'.'Name:'.'</td><td>'.$row->member_name.'</td></tr>';
+            $output .= '<tr><td>'.'Title:'.'</td><td>'.$row->member_title.'</td></tr>';
             $output .= '</tbody></table></figure>';
             //return $output;
 
@@ -81,17 +83,17 @@ if (!class_exists('badges')) {
              * user_badges relationship
              */
             global $wpdb;
-            $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}user_badges WHERE student_id = {$_id}", OBJECT );
+            $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}member_badges WHERE member_id = {$_id}", OBJECT );
             $output .= '<figure class="wp-block-table"><table><tbody>';
             $output .= '<tr><td>'.'#'.'</td><td>Badges</td></tr>';
             foreach ($results as $index => $result) {
                 $output .= '<tr><td>'.($index+1).'</td>';                
-                $output .= '<td>'.'<select name="_badge_id_'.$index.'">'.self::select_options($results[$index]->badge_id).'</select></td>';
+                $output .= '<td>'.'<select name="_badge_id_'.$index.'">'.self::select_badges($results[$index]->badge_id).'</select></td>';
                 $output .= '</tr>';
             }
             $output .= '<tr><td>'.'#'.'</td>';
-            $output .= '<td>'.'<select name="_badge_id">'.self::select_options().'</select>'.'</td>';
-            $output .= '<input type="hidden" name="_student_id" value="'.$_id.'">';
+            $output .= '<td>'.'<select name="_badge_id">'.self::select_badges().'</select>'.'</td>';
+            $output .= '<input type="hidden" name="_member_id" value="'.$_id.'">';
             $output .= '</tr>';
             $output .= '</tbody></table></figure>';
             
@@ -123,15 +125,12 @@ if (!class_exists('badges')) {
                 if ($_mode=='Create') {} else return 'id is required';                
             }
 
-            if( isset($_POST['edit_action']) ) {
-                //if( isset($_POST['create_action']) ) {
-                if( $_POST['edit_action']=='Create' ) {
+            if( isset($_POST['submit_action']) ) {
+                if( $_POST['submit_action']=='Create' ) {
         
-                    //return 'I am here';
                     global $wpdb;          
                     $table = $wpdb->prefix.'badges';
                     $data = array(
-                        //'created_date' => current_time('timestamp'), 
                         'badge_title' => $_POST['_badge_title'],
                         'badge_link' => $_POST['_badge_link'],
                         'image_link' => $_POST['_image_link'],
@@ -170,7 +169,7 @@ if (!class_exists('badges')) {
                 }
     
                 //if( isset($_POST['update_action']) ) {
-                if( $_POST['edit_action']=='Update' ) {
+                if( $_POST['submit_action']=='Update' ) {
     /*        
                     $UpdateCourseAction = new UpdateCourseAction();                
                     $UpdateCourseAction->setCourseId(intval($_POST['_course_id']));
@@ -199,22 +198,16 @@ if (!class_exists('badges')) {
                         $where = array('badge_id' => $_id);
                         $wpdb->update( $table, $data, $where );
                     }
-/*    
-                    ?><script>window.location=window.location.pathname</script><?php
-*/                    
                 }
             
-                //if( isset($_POST['delete_action']) ) {
-                if( $_POST['edit_action']=='Delete' ) {
+                if( $_POST['submit_action']=='Delete' ) {
             
                     global $wpdb;
                     $table = $wpdb->prefix.'badges';
                     $where = array('badge_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
-/*                    
-                    ?><script>window.location=window.location.pathname</script><?php
-*/                    
                 }
+
                 ?><script>window.location=window.location.pathname</script><?php
             }
 
@@ -234,19 +227,19 @@ if (!class_exists('badges')) {
             if( $_mode=='Create' ) {
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="edit_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="submit_action">';
                 $output .= '</div>';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="edit_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="submit_action">';
                 $output .= '</div>';
                 $output .= '</div>';
             } else {
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="edit_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="submit_action">';
                 $output .= '</div>';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="edit_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="submit_action">';
                 $output .= '</div>';
                 $output .= '</div>';
             }
@@ -264,15 +257,12 @@ if (!class_exists('badges')) {
                 if ($_mode=='Create') {} else return 'id is required';                
             }
 
-            if( isset($_POST['edit_action']) ) {
-                //if( isset($_POST['create_action']) ) {
-                if( $_POST['edit_action']=='Create' ) {
+            if( isset($_POST['submit_action']) ) {
+                if( $_POST['submit_action']=='Create' ) {
         
-                    //return 'I am here';
                     global $wpdb;          
                     $table = $wpdb->prefix.'members';
                     $data = array(
-                        //'created_date' => current_time('timestamp'), 
                         'member_name' => $_POST['_member_name'],
                         'member_title' => $_POST['_member_title'],
                         'member_link' => $_POST['_member_link'],
@@ -305,13 +295,10 @@ if (!class_exists('badges')) {
                         $where = array('course_id' => $insert_id);
                         $wpdb->update( $table, $data, $where );
                     }
-    
-                    ?><script>window.location=window.location.pathname</script><?php
 */                    
                 }
     
-                //if( isset($_POST['update_action']) ) {
-                if( $_POST['edit_action']=='Update' ) {
+                if( $_POST['submit_action']=='Update' ) {
     /*        
                     $UpdateCourseAction = new UpdateCourseAction();                
                     $UpdateCourseAction->setCourseId(intval($_POST['_course_id']));
@@ -340,22 +327,16 @@ if (!class_exists('badges')) {
                         $where = array('member_id' => $_id);
                         $wpdb->update( $table, $data, $where );
                     }
-/*    
-                    ?><script>window.location=window.location.pathname</script><?php
-*/                    
                 }
             
-                //if( isset($_POST['delete_action']) ) {
-                if( $_POST['edit_action']=='Delete' ) {
+                if( $_POST['submit_action']=='Delete' ) {
             
                     global $wpdb;
                     $table = $wpdb->prefix.'members';
                     $where = array('member_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
-/*                    
-                    ?><script>window.location=window.location.pathname</script><?php
-*/                    
                 }
+
                 ?><script>window.location=window.location.pathname</script><?php
             }
 
@@ -375,19 +356,19 @@ if (!class_exists('badges')) {
             if( $_mode=='Create' ) {
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="edit_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="submit_action">';
                 $output .= '</div>';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="edit_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="submit_action">';
                 $output .= '</div>';
                 $output .= '</div>';
             } else {
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="edit_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="submit_action">';
                 $output .= '</div>';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="edit_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="submit_action">';
                 $output .= '</div>';
                 $output .= '</div>';
             }
@@ -399,7 +380,7 @@ if (!class_exists('badges')) {
             
             if( isset($_GET['view_mode']) ) {
                 //if ($_GET['view_mode']=='user_badges') return self::user_badges($_GET['_id']);
-                return self::user_badges($_GET['_id']);
+                return self::member_badges($_GET['_id']);
             }
 
             if( isset($_GET['edit_mode']) ) {
@@ -415,7 +396,6 @@ if (!class_exists('badges')) {
              */
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
-            //return var_dump($badges);
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
             $output  = '<h2>教師考取相關證照紀錄</h2>';
             $output .= '<figure class="wp-block-table"><table><tbody>';
@@ -426,7 +406,8 @@ if (!class_exists('badges')) {
             $output .= '</tr>';
             foreach ($members as $index => $member) {
                 $output .= '<tr>';
-                $output .= '<td><a href="?view_mode=user_badges&_id='.$member->member_id.'">'.$member->member_name.'</a></td>';
+                $output .= '<td><a href="?edit_mode=edit_member&_id='.$member->member_id.'">'.$member->member_name.'</a>';
+                $output .= '(<a href="?view_mode=member_badges&_id='.$member->member_id.'">'.$member->member_title.'</a>)</td>';
                 foreach ($badges as $index => $badge) {
                     $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}member_badges WHERE member_id = {$member->member_id} AND badge_id = {$badge->badge_id}", OBJECT );
                     if (empty($row)) {
@@ -455,6 +436,40 @@ if (!class_exists('badges')) {
             return $output;
         }
         
+        function select_badges( $default_id=null ) {
+
+            global $wpdb;
+            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
+        
+            $output = '<option value="no_select">-- Select an option --</option>';
+            foreach ($badges as $index => $badge) {
+                if ( $badge->badge_id == $default_id ) {
+                    $output .= '<option value="'.$badge->badge_id.'" selected>';
+                } else {
+                    $output .= '<option value="'.$badge->badge_id.'">';
+                }
+                $output .= $badge->badge_title;
+                $output .= '</option>';        
+            }
+/*                
+            $loop = new WP_Query( $args );
+            while ( $loop->have_posts() ) : $loop->the_post();
+                global $product;
+                if ( $product->get_id() == $default_id ) {
+                    $output .= '<option value="'.$product->get_id().'" selected>';
+                } else {
+                    $output .= '<option value="'.$product->get_id().'">';
+                }
+                $output .= $product->get_name();
+                $output .= '</option>';        
+            endwhile;
+            wp_reset_query();
+*/
+            $output .= '<option value="delete_select">-- Remove this --</option>';
+
+            return $output;
+        }
+
         function select_options( $default_id=null ) {
 
             $args = array(
