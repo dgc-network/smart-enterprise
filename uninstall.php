@@ -14,5 +14,5 @@ delete_site_option($option_name);
 */
 // drop a custom database table
 global $wpdb;
-$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}member_badges" );
+//$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}member_badges" );
 ?>
