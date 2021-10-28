@@ -113,99 +113,108 @@ if (!class_exists('badges')) {
             return $output;
         }
 
-        function edit_mode( $_mode=null , $_id=null ) {
+        function badge_edit_mode( $_mode=null , $_id=null ) {
 
             if ($_mode==null){
                 $_mode='Create';
             }
 
             if ($_id==null){
-                if ($_mode=='Create') {} else 
-                return 'id is required';
+                if ($_mode=='Create') {} else return 'id is required';                
             }
 
-            if( isset($_POST['create_action']) ) {
+            if( isset($_POST['edit_action']) ) {
+                //if( isset($_POST['create_action']) ) {
+                if( $_POST['edit_action']=='Create' ) {
         
-                //return 'I am here';
-                global $wpdb;          
-                $table = $wpdb->prefix.'badges';
-                $data = array(
-                    //'created_date' => current_time('timestamp'), 
-                    'badge_title' => $_POST['_badge_title'],
-                    'badge_link' => $_POST['_badge_link'],
-                    'image_link' => $_POST['_image_link'],
-                );
-                $format = array('%s', '%s', '%s');
-                $insert_id = $wpdb->insert($table, $data, $format);
-/*
-                $CreateCourseAction = new CreateCourseAction();                
-                //$CreateCourseAction->setCourseId(intval($_POST['_course_id']));
-                $CreateCourseAction->setCourseId(intval($insert_id));
-                $CreateCourseAction->setCourseTitle($_POST['_course_title']);
-                $CreateCourseAction->setCreatedDate(intval(current_time('timestamp')));
-                //$CreateCourseAction->setListPrice(floatval($_POST['_list_price']));
-                //$CreateCourseAction->setSalePrice(floadval($_POST['_sale_price']));
-                $CreateCourseAction->setPublicKey($_POST['_public_key']);
-                $send_data = $CreateCourseAction->serializeToString();
-
-                $op_result = OP_RETURN_send(OP_RETURN_SEND_ADDRESS, OP_RETURN_SEND_AMOUNT, $send_data);
-
-                if (isset($op_result['error'])) {
-
-                    $result_output = 'Error: '.$op_result['error']."\n";
-                    return $result_output;
-                } else {
-
+                    //return 'I am here';
+                    global $wpdb;          
                     $table = $wpdb->prefix.'badges';
                     $data = array(
-                        'txid' => $op_result['txid'], 
-                    );
-                    $where = array('course_id' => $insert_id);
-                    $wpdb->update( $table, $data, $where );
-                }
-*/
-                ?><script>window.location=window.location.pathname</script><?php
-            }
-
-            if( isset($_POST['update_action']) ) {
-/*        
-                $UpdateCourseAction = new UpdateCourseAction();                
-                $UpdateCourseAction->setCourseId(intval($_POST['_course_id']));
-                $UpdateCourseAction->setCourseTitle($_POST['_course_title']);
-                $UpdateCourseAction->setCreatedDate(intval(strtotime($_POST['_created_date'])));
-                //$UpdateCourseAction->setListPrice(floatval($_POST['_list_price']));
-                //$UpdateCourseAction->setSalePrice(floatval($_POST['_sale_price']));
-                $UpdateCourseAction->setPublicKey($_POST['_public_key']);
-                $send_data = $UpdateCourseAction->serializeToString();
-
-                $op_result = OP_RETURN_send(OP_RETURN_SEND_ADDRESS, OP_RETURN_SEND_AMOUNT, $send_data);
-*/            
-                if (isset($op_result['error'])) {
-                    $result_output = 'Error: '.$op_result['error']."\n";
-                    return $result_output;
-                } else {
-
-                    global $wpdb;
-                    $table = $wpdb->prefix.'badges';
-                    $data = array(
+                        //'created_date' => current_time('timestamp'), 
                         'badge_title' => $_POST['_badge_title'],
                         'badge_link' => $_POST['_badge_link'],
                         'image_link' => $_POST['_image_link'],
-                        //'txid' => $op_result['txid'], 
                     );
-                    $where = array('badge_id' => $_id);
-                    $wpdb->update( $table, $data, $where );
+                    $format = array('%s', '%s', '%s');
+                    $insert_id = $wpdb->insert($table, $data, $format);
+    /*
+                    $CreateCourseAction = new CreateCourseAction();                
+                    //$CreateCourseAction->setCourseId(intval($_POST['_course_id']));
+                    $CreateCourseAction->setCourseId(intval($insert_id));
+                    $CreateCourseAction->setCourseTitle($_POST['_course_title']);
+                    $CreateCourseAction->setCreatedDate(intval(current_time('timestamp')));
+                    //$CreateCourseAction->setListPrice(floatval($_POST['_list_price']));
+                    //$CreateCourseAction->setSalePrice(floadval($_POST['_sale_price']));
+                    $CreateCourseAction->setPublicKey($_POST['_public_key']);
+                    $send_data = $CreateCourseAction->serializeToString();
+    
+                    $op_result = OP_RETURN_send(OP_RETURN_SEND_ADDRESS, OP_RETURN_SEND_AMOUNT, $send_data);
+    
+                    if (isset($op_result['error'])) {
+    
+                        $result_output = 'Error: '.$op_result['error']."\n";
+                        return $result_output;
+                    } else {
+    
+                        $table = $wpdb->prefix.'badges';
+                        $data = array(
+                            'txid' => $op_result['txid'], 
+                        );
+                        $where = array('course_id' => $insert_id);
+                        $wpdb->update( $table, $data, $where );
+                    }
+    
+                    ?><script>window.location=window.location.pathname</script><?php
+*/                    
                 }
-
-                ?><script>window.location=window.location.pathname</script><?php
-            }
-        
-            if( isset($_POST['delete_action']) ) {
-        
-                global $wpdb;
-                $table = $wpdb->prefix.'badges';
-                $where = array('badge_id' =>  $_id);
-                $deleted = $wpdb->delete( $table, $where );
+    
+                //if( isset($_POST['update_action']) ) {
+                if( $_POST['edit_action']=='Update' ) {
+    /*        
+                    $UpdateCourseAction = new UpdateCourseAction();                
+                    $UpdateCourseAction->setCourseId(intval($_POST['_course_id']));
+                    $UpdateCourseAction->setCourseTitle($_POST['_course_title']);
+                    $UpdateCourseAction->setCreatedDate(intval(strtotime($_POST['_created_date'])));
+                    //$UpdateCourseAction->setListPrice(floatval($_POST['_list_price']));
+                    //$UpdateCourseAction->setSalePrice(floatval($_POST['_sale_price']));
+                    $UpdateCourseAction->setPublicKey($_POST['_public_key']);
+                    $send_data = $UpdateCourseAction->serializeToString();
+    
+                    $op_result = OP_RETURN_send(OP_RETURN_SEND_ADDRESS, OP_RETURN_SEND_AMOUNT, $send_data);
+    */            
+                    if (isset($op_result['error'])) {
+                        $result_output = 'Error: '.$op_result['error']."\n";
+                        return $result_output;
+                    } else {
+    
+                        global $wpdb;
+                        $table = $wpdb->prefix.'badges';
+                        $data = array(
+                            'badge_title' => $_POST['_badge_title'],
+                            'badge_link' => $_POST['_badge_link'],
+                            'image_link' => $_POST['_image_link'],
+                            //'txid' => $op_result['txid'], 
+                        );
+                        $where = array('badge_id' => $_id);
+                        $wpdb->update( $table, $data, $where );
+                    }
+/*    
+                    ?><script>window.location=window.location.pathname</script><?php
+*/                    
+                }
+            
+                //if( isset($_POST['delete_action']) ) {
+                if( $_POST['edit_action']=='Delete' ) {
+            
+                    global $wpdb;
+                    $table = $wpdb->prefix.'badges';
+                    $where = array('badge_id' =>  $_id);
+                    $deleted = $wpdb->delete( $table, $where );
+/*                    
+                    ?><script>window.location=window.location.pathname</script><?php
+*/                    
+                }
                 ?><script>window.location=window.location.pathname</script><?php
             }
 
@@ -225,19 +234,19 @@ if (!class_exists('badges')) {
             if( $_mode=='Create' ) {
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="create_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="edit_action">';
                 $output .= '</div>';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="cancel_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="edit_action">';
                 $output .= '</div>';
                 $output .= '</div>';
             } else {
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="update_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="edit_action">';
                 $output .= '</div>';
                 $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="delete_action">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="edit_action">';
                 $output .= '</div>';
                 $output .= '</div>';
             }
@@ -248,10 +257,13 @@ if (!class_exists('badges')) {
         function list_mode() {
             
             if( isset($_GET['view_mode']) ) {
-                if ($_GET['view_mode']=='user_badges') return self::user_badges($_GET['_id']);
+                //if ($_GET['view_mode']=='user_badges') return self::user_badges($_GET['_id']);
+                return self::user_badges($_GET['_id']);
             }
 
             if( isset($_GET['edit_mode']) ) {
+                if ($_GET['edit_mode']=='Create Badge') return self::badge_edit_mode();
+                if ($_GET['edit_mode']=='edit_badge') return self::badge_edit_mode( $_GET['edit_mode'], $_GET['_id'] );
                 return self::edit_mode( $_GET['edit_mode'], $_GET['_id'] );
             }            
 
@@ -266,7 +278,7 @@ if (!class_exists('badges')) {
             $output .= '<figure class="wp-block-table"><table><tbody>';
             $output .= '<tr><td>證照紀錄</td>';
             foreach ($badges as $index => $badge) {
-                $output .= '<td><a href="?edit_mode=badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
+                $output .= '<td><a href="?edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
             }
             $output .= '</tr>';
             foreach ($members as $index => $member) {
@@ -287,7 +299,7 @@ if (!class_exists('badges')) {
             $output .= '<form method="get">';
             $output .= '<div class="wp-block-buttons">';
             $output .= '<div class="wp-block-button">';
-            $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="edit_mode">';
+            $output .= '<input class="wp-block-button__link" type="submit" value="Create Badge" name="edit_mode">';
             $output .= '</div>';
             $output .= '<div class="wp-block-button">';
             $output .= '<a class="wp-block-button__link" href="/">Cancel</a>';
