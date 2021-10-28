@@ -164,7 +164,7 @@ if (!class_exists('badges')) {
                     $wpdb->update( $table, $data, $where );
                 }
 */
-                ?><script>window.location='/badges'</script><?php
+                ?><script>window.location=window.location.href</script><?php
             }
 
             if( isset($_POST['update_action']) ) {
@@ -193,20 +193,20 @@ if (!class_exists('badges')) {
                         'image_link' => $_POST['_image_link'],
                         //'txid' => $op_result['txid'], 
                     );
-                    $where = array('badge_id' => $_POST['_id']);
+                    $where = array('badge_id' => $_id);
                     $wpdb->update( $table, $data, $where );
                 }
 
-                ?><script>window.location='/badges'</script><?php
+                ?><script>window.location=window.location.href</script><?php
             }
         
             if( isset($_POST['delete_action']) ) {
         
                 global $wpdb;
                 $table = $wpdb->prefix.'badges';
-                $where = array('badge_id' => $_POST['_id']);
+                $where = array('badge_id' =>  $_id);
                 $deleted = $wpdb->delete( $table, $where );
-                ?><script>window.location='/cbadges'</script><?php
+                ?><script>window.location=window.location.href</script><?php
             }
 
             /** 
