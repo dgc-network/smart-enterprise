@@ -10,8 +10,8 @@ if (!class_exists('badges')) {
          * Class constructor
          */
         public function __construct() {
-            add_shortcode('badge_list', __CLASS__ . '::list_mode');
-            add_shortcode('badge-list', __CLASS__ . '::list_mode');
+            //add_shortcode('badge_list', __CLASS__ . '::list_mode');
+            //add_shortcode('badge-list', __CLASS__ . '::list_mode');
             add_shortcode('teacher-badge-list', __CLASS__ . '::teacher_list_mode');
             add_shortcode('student-badge-list', __CLASS__ . '::student_list_mode');
             self::create_tables();
@@ -380,7 +380,12 @@ if (!class_exists('badges')) {
             return self::list_mode( $isTeacher );
         }
 
-        function list_mode( $isTeacher = '0' ) {
+        function student_list_mode() {
+            $isTeacher = '0';
+            return self::list_mode( $isTeacher );
+        }
+
+        function list_mode( $isTeacher ) {
 
             if( isset($_GET['edit_mode']) ) {
                 if ($_GET['edit_mode']=='Create Badge') return self::badge_edit_mode();
