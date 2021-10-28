@@ -376,11 +376,11 @@ if (!class_exists('badges')) {
         }
 
         function teacher_list_mode() {
-            $isTeacher = true;
+            $isTeacher = '1';
             return self::list_mode( $isTeacher );
         }
 
-        function list_mode( $isTeacher = false ) {
+        function list_mode( $isTeacher = '0' ) {
 
             if( isset($_GET['edit_mode']) ) {
                 if ($_GET['edit_mode']=='Create Badge') return self::badge_edit_mode();
@@ -396,9 +396,9 @@ if (!class_exists('badges')) {
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
-            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
-            return var_dump($members);
-            if ( $isTeacher ) {
+            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
+            //return var_dump($members);
+            if ( $isTeacher=='1' ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
             } else {
                 $output  = '<h2>學生考取相關證照紀錄</h2>';
