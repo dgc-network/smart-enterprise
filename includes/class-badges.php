@@ -430,7 +430,9 @@ if (!class_exists('badges')) {
             }
             $output .= '</tbody></table></figure>';
             
-            if ( is_admin() ) {
+            $user = wp_get_current_user();
+            $allowed_roles = array('editor', 'administrator', 'author');
+            if( array_intersect($allowed_roles, $user->roles ) ) {
 
                 $output .= '<form method="get">';
                 $output .= '<div class="wp-block-buttons">';
