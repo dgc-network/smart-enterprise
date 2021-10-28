@@ -381,12 +381,7 @@ if (!class_exists('badges')) {
         }
 
         function list_mode( $isTeacher = false ) {
-/*            
-            if( isset($_GET['view_mode']) ) {
-                //if ($_GET['view_mode']=='user_badges') return self::user_badges($_GET['_id']);
-                return self::member_badges($_GET['_id']);
-            }
-*/
+
             if( isset($_GET['edit_mode']) ) {
                 if ($_GET['edit_mode']=='Create Badge') return self::badge_edit_mode();
                 if ($_GET['edit_mode']=='edit_badge') return self::badge_edit_mode( $_GET['edit_mode'], $_GET['_id'] );
@@ -401,7 +396,7 @@ if (!class_exists('badges')) {
             global $wpdb;
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
-            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
+            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members", OBJECT );
             if ( $isTeacher ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
             } else {
@@ -428,20 +423,24 @@ if (!class_exists('badges')) {
                 $output .= '</tr>';
             }
             $output .= '</tbody></table></figure>';
+            
+            if ( is_admin() ) {} else {
 
-            $output .= '<form method="get">';
-            $output .= '<div class="wp-block-buttons">';
-            $output .= '<div class="wp-block-button">';
-            $output .= '<input class="wp-block-button__link" type="submit" value="Create Member" name="edit_mode">';
-            $output .= '</div>';
-            $output .= '<div class="wp-block-button">';
-            $output .= '<input class="wp-block-button__link" type="submit" value="Create Badge" name="edit_mode">';
-            $output .= '</div>';
-            $output .= '<div class="wp-block-button">';
-            $output .= '<a class="wp-block-button__link" href="/">Cancel</a>';
-            $output .= '</div>';
-            $output .= '</div>';
-            $output .= '</form>';
+                $output .= '<form method="get">';
+                $output .= '<div class="wp-block-buttons">';
+                $output .= '<div class="wp-block-button">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Create Member" name="edit_mode">';
+                $output .= '</div>';
+                $output .= '<div class="wp-block-button">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Create Badge" name="edit_mode">';
+                $output .= '</div>';
+                $output .= '<div class="wp-block-button">';
+                $output .= '<a class="wp-block-button__link" href="/">Cancel</a>';
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '</form>';
+            }
+
             return $output;
         }
         
@@ -464,51 +463,7 @@ if (!class_exists('badges')) {
 
             return $output;
         }
-/*
-        function select_options( $default_id=null ) {
 
-            $args = array(
-                'post_type'     => 'product',
-                'product_cat'   => 'Badges',
-                'posts_per_page'=> 200,
-                'order'         => 'ASC'
-            );       
-        
-            $output = '<option value="no_select">-- Select an option --</option>';
-            $loop = new WP_Query( $args );
-            while ( $loop->have_posts() ) : $loop->the_post();
-                global $product;
-                if ( $product->get_id() == $default_id ) {
-                    $output .= '<option value="'.$product->get_id().'" selected>';
-                } else {
-                    $output .= '<option value="'.$product->get_id().'">';
-                }
-                $output .= $product->get_name();
-                $output .= '</option>';        
-            endwhile;
-            wp_reset_query();
-            $output .= '<option value="delete_select">-- Remove this --</option>';
-
-            return $output;
-        }
-
-        function select_users( $default_id=null ) {
-
-            $results = get_users();
-            $output = '<option value="no_select">-- Select an option --</option>';
-            foreach ($results as $index => $result) {
-                if ( $results[$index]->ID == $default_id ) {
-                    $output .= '<option value="'.$results[$index]->ID.'" selected>';
-                } else {
-                    $output .= '<option value="'.$results[$index]->ID.'">';
-                }
-                $output .= $results[$index]->display_name;
-                $output .= '</option>';        
-            }
-            $output .= '<option value="delete_select">-- Remove this --</option>';
-            return $output;    
-        }
-*/
         function create_tables() {
         
             global $wpdb;
@@ -544,16 +499,6 @@ if (!class_exists('badges')) {
                 PRIMARY KEY  (m_b_id)
             ) $charset_collate;";        
             dbDelta($sql);
-/*
-            $sql = "CREATE TABLE `{$wpdb->prefix}user_badges` (
-                u_b_id int NOT NULL AUTO_INCREMENT,
-                student_id int NOT NULL,
-                badge_id int NOT NULL,
-                txid varchar(255),
-                PRIMARY KEY  (u_b_id)
-            ) $charset_collate;";        
-            dbDelta($sql);
-*/
         }        
     }
     //if ( is_admin() )
