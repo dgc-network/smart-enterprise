@@ -17,10 +17,6 @@ if (!class_exists('badges')) {
             self::create_tables();
         }
 
-        function teacher_list_mode() {
-            self::list_mode( true );
-        }
-
         function member_badges_mode( $_id=null ) {
 
             if ($_id==null){
@@ -372,6 +368,10 @@ if (!class_exists('badges')) {
             }
             $output .= '</form>';
             return $output;
+        }
+
+        function teacher_list_mode() {
+            self::list_mode( $isTeacher = true );
         }
 
         function list_mode( $isTeacher = false ) {
