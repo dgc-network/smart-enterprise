@@ -108,6 +108,7 @@ if (!class_exists('badges')) {
 
             if ($_mode==null){
                 $_mode='Create';
+                $_id=0;
             }
 
             if ($_id==null){
@@ -235,6 +236,7 @@ if (!class_exists('badges')) {
 
             if ($_mode==null){
                 $_mode='Create';
+                $_id=0;
             }
 
             if ($_id==null){
