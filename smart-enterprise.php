@@ -18,4 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 include_once dirname( __FILE__ ) . '/includes/class-badges.php';
+//$badge = new badges();
+add_shortcode('teacher-badge-list', array( 'badges', '$badge->teacher_list_mode' ));
+//add_shortcode('student-badge-list', __CLASS__ . '::student_list_mode');
+
 ?>

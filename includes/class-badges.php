@@ -10,8 +10,8 @@ if (!class_exists('badges')) {
          * Class constructor
          */
         public function __construct() {
-            add_shortcode('teacher-badge-list', __CLASS__ . '::teacher_list_mode');
-            add_shortcode('student-badge-list', __CLASS__ . '::student_list_mode');
+            //add_shortcode('teacher-badge-list', __CLASS__ . '::teacher_list_mode');
+            //add_shortcode('student-badge-list', __CLASS__ . '::student_list_mode');
             self::create_tables();
         }
 
