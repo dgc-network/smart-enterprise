@@ -436,15 +436,15 @@ if (!class_exists('badges')) {
         public static function list_mode( $isTeacher ) {
 
             if( isset($_GET['edit_mode']) ) {
-                //if ($_GET['edit_mode']=='Create Badge') return self::badge_edit_mode();
+                if ($_GET['edit_mode']=='Create Badge') return self::badge_edit_mode();
                 //if ($_GET['edit_mode']=='edit_badge') return self::badge_edit_mode( $_GET['edit_mode'], $_GET['_id'] );
                 if ($_GET['edit_mode']=='edit_badge') return self::badge_edit_mode( $_GET['_id'] );
-                //if ($_GET['edit_mode']=='Create Member') return self::member_edit_mode();
+                if ($_GET['edit_mode']=='Create Member') return self::member_edit_mode();
                 //if ($_GET['edit_mode']=='edit_member') return self::member_edit_mode( $_GET['edit_mode'], $_GET['_id'] );
                 if ($_GET['edit_mode']=='edit_member') return self::member_edit_mode( $_GET['_id'] );
                 if ($_GET['edit_mode']=='member_badges') return self::member_badges_mode( $_GET['_id'] );
             }            
-
+/*
             if( isset($_POST['edit_mode']) ) {
                 if ($_POST['edit_mode']=='Create Badge') return self::badge_edit_mode();
                 //if ($_POST['edit_mode']=='edit_badge') return self::badge_edit_mode( $_POST['edit_mode'], $_POST['_id'] );
@@ -452,7 +452,7 @@ if (!class_exists('badges')) {
                 //if ($_POST['edit_mode']=='edit_member') return self::member_edit_mode( $_POST['edit_mode'], $_POST['_id'] );
                 //if ($_POST['edit_mode']=='member_badges') return self::member_badges_mode( $_POST['_id'] );
             }            
-
+*/
             /**
              * List Mode
              */
@@ -490,8 +490,8 @@ if (!class_exists('badges')) {
             $allowed_roles = array('editor', 'administrator', 'author');
             if( array_intersect($allowed_roles, $user->roles ) ) {
 
-                //$output .= '<form method="get">';
-                $output .= '<form method="post">';
+                $output .= '<form method="get">';
+                //$output .= '<form method="post">';
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
                 $output .= '<input class="wp-block-button__link" type="submit" value="Create Member" name="edit_mode">';
