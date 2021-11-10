@@ -1,12 +1,11 @@
 <?php
 if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly.
+    exit;
 }
 if (!class_exists('badges')) {
 
     class badges {
 
-        private static $basename;
         private static $isTeacher;
 
         /**
@@ -16,7 +15,6 @@ if (!class_exists('badges')) {
             add_shortcode('teacher-badge-list', __CLASS__ . '::teacher_list_mode');
             add_shortcode('student-badge-list', __CLASS__ . '::student_list_mode');
             self::create_tables();
-            //$this->basename = basename($_SERVER['REQUEST_URI']);
         }
 
         public static function member_badges_mode( $_id=null ) {
@@ -30,8 +28,6 @@ if (!class_exists('badges')) {
                 if( $_POST['submit_action']=='Cancel' ) {
                     $_GET['edit_mode']='';
                     $_POST['edit_mode']='';
-                    //$isTeacher = '1';
-                    //return self::list_mode( $isTeacher );
                     return self::list_mode( self::$isTeacher );
                 }
 
@@ -106,10 +102,7 @@ if (!class_exists('badges')) {
             $output .= '<div class="wp-block-button">';
             $output .= '<input class="wp-block-button__link" type="submit" value="Submit" name="submit_action">';
             $output .= '</div>';
-            //$output .= '</form>';
-            //$output .= '<form method="get">';
             $output .= '<div class="wp-block-button">';
-            //$output .= '<input class="wp-block-button__link" type="submit" value="Cancel"';
             $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="submit_action">';
             $output .= '</div>';
             $output .= '</div>';
@@ -118,23 +111,16 @@ if (!class_exists('badges')) {
             return $output;
         }
 
-        //public static function badge_edit_mode( $_mode=null , $_id=null ) {
-        public static function badge_edit_mode( $_id=null, $_mode='' ) {
-
-            //if ($_mode==null){
-            if ($_id==null){
-                $_mode='Create';
-                $_id=0;
-            }
+        public static function badge_edit_mode( $_id=0, $_mode='' ) {
 
             //if ($_id==null){
-                //if ($_mode=='Create') {} else return 'id is required';                
-            //}
+            if ($_id==0){
+                $_mode='Create';
+                //$_id=0;
+            }
 
             if( isset($_POST['submit_action']) ) {
-            //if( isset($_GET['submit_action']) ) {
                 if( $_POST['submit_action']=='Create' ) {
-                    //return 'I am here';
         
                     global $wpdb;          
                     $table = $wpdb->prefix.'badges';
@@ -213,16 +199,9 @@ if (!class_exists('badges')) {
 
                 $_GET['edit_mode']='';
                 $_POST['edit_mode']='';
-                //$isTeacher = '1';
-                //return self::list_mode( $isTeacher );
                 return self::list_mode( self::$isTeacher );
-    
-/*
-                ?><script>window.location=window.location.pathname</script><?php
-*/
+
             } else {
-
-
                 /** 
                  * edit_mode
                  */
@@ -230,7 +209,6 @@ if (!class_exists('badges')) {
                 $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}badges WHERE badge_id = {$_id}", OBJECT );
                 $output  = '<h2>證照維護</h2>';
                 $output .= '<form method="post">';
-                //$output .= '<form method="get">';
         
                 if( $_mode=='Create' ) {
                     $output .= '<input type="hidden" value="Create Badge" name="edit_mode">';
@@ -269,18 +247,13 @@ if (!class_exists('badges')) {
             }
         }
 
-        //public static function member_edit_mode( $_mode=null , $_id=null ) {
-        public static function member_edit_mode( $_id=null, $_mode='' ) {
-
-            //if ($_mode==null){
-            if ($_id==null){
-                $_mode='Create';
-                $_id=0;
-            }
+        public static function member_edit_mode( $_id=0, $_mode='' ) {
 
             //if ($_id==null){
-                //if ($_mode=='Create') {} else return 'id is required';                
-            //}
+            if ($_id==0){
+                $_mode='Create';
+                //$_id=0;
+            }
 
             if( isset($_POST['submit_action']) ) {
                 if( $_POST['submit_action']=='Create' ) {
@@ -363,13 +336,8 @@ if (!class_exists('badges')) {
                 }
                 $_GET['edit_mode']='';
                 $_POST['edit_mode']='';
-                //$isTeacher = '1';
-                //return self::list_mode( $isTeacher );
                 return self::list_mode( self::$isTeacher );
 
-/*
-                ?><script>window.location=window.location.pathname</script><?php
-*/
             } else {
                 /** 
                  * edit_mode
@@ -419,19 +387,14 @@ if (!class_exists('badges')) {
                 return $output;
     
             }
-
         }
 
         public static function teacher_list_mode() {
-            //$isTeacher = '1';
-            //return self::list_mode( $isTeacher );
             self::$isTeacher = '1';
             return self::list_mode( self::$isTeacher );
         }
 
         public static function student_list_mode() {
-            //$isTeacher = '0';
-            //return self::list_mode( $isTeacher );
             self::$isTeacher = '0';
             return self::list_mode( self::$isTeacher );
         }
@@ -440,18 +403,11 @@ if (!class_exists('badges')) {
 
             if( isset($_POST['edit_mode']) ) {
                 if ($_POST['edit_mode']=='Create Badge') return self::badge_edit_mode();
-                //if ($_POST['edit_mode']=='edit_badge') return self::badge_edit_mode( $_POST['edit_mode'], $_POST['_id'] );
                 if ($_POST['edit_mode']=='Create Member') return self::member_edit_mode();
-                //if ($_POST['edit_mode']=='edit_member') return self::member_edit_mode( $_POST['edit_mode'], $_POST['_id'] );
-                //if ($_POST['edit_mode']=='member_badges') return self::member_badges_mode( $_POST['_id'] );
             }            
 
             if( isset($_GET['edit_mode']) ) {
-                //if ($_GET['edit_mode']=='Create Badge') return self::badge_edit_mode();
-                //if ($_GET['edit_mode']=='edit_badge') return self::badge_edit_mode( $_GET['edit_mode'], $_GET['_id'] );
                 if ($_GET['edit_mode']=='edit_badge') return self::badge_edit_mode( $_GET['_id'] );
-                //if ($_GET['edit_mode']=='Create Member') return self::member_edit_mode();
-                //if ($_GET['edit_mode']=='edit_member') return self::member_edit_mode( $_GET['edit_mode'], $_GET['_id'] );
                 if ($_GET['edit_mode']=='edit_member') return self::member_edit_mode( $_GET['_id'] );
                 if ($_GET['edit_mode']=='member_badges') return self::member_badges_mode( $_GET['_id'] );
             }            
@@ -493,7 +449,6 @@ if (!class_exists('badges')) {
             $allowed_roles = array('editor', 'administrator', 'author');
             if( array_intersect($allowed_roles, $user->roles ) ) {
 
-                //$output .= '<form method="get">';
                 $output .= '<form method="post">';
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
@@ -502,9 +457,6 @@ if (!class_exists('badges')) {
                 $output .= '<div class="wp-block-button">';
                 $output .= '<input class="wp-block-button__link" type="submit" value="Create Badge" name="edit_mode">';
                 $output .= '</div>';
-                //$output .= '<div class="wp-block-button">';
-                //$output .= '<a class="wp-block-button__link" href="/">Cancel</a>';
-                //$output .= '</div>';
                 $output .= '</div>';
                 $output .= '</form>';
             }
