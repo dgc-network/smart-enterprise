@@ -106,7 +106,7 @@ if (!class_exists('badges')) {
         }
 
         //public static function badge_edit_mode( $_mode=null , $_id=null ) {
-        public static function badge_edit_mode( $_id=null ) {
+        public static function badge_edit_mode( $_id=null, $_mode='Create' ) {
 
             //if ($_mode==null){
             if ($_id==null){
@@ -244,7 +244,7 @@ if (!class_exists('badges')) {
         }
 
         //public static function member_edit_mode( $_mode=null , $_id=null ) {
-        public static function member_edit_mode( $_id=null ) {
+        public static function member_edit_mode( $_id=null, $_mode='Create' ) {
 
             //if ($_mode==null){
             if ($_id==null){
