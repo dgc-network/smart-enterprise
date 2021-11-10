@@ -6,6 +6,8 @@ if (!class_exists('badges')) {
 
     class badges {
 
+        private $basename;
+
         /**
          * Class constructor
          */
@@ -13,6 +15,7 @@ if (!class_exists('badges')) {
             add_shortcode('teacher-badge-list', __CLASS__ . '::teacher_list_mode');
             add_shortcode('student-badge-list', __CLASS__ . '::student_list_mode');
             self::create_tables();
+            $this->basename = basename($_SERVER['REQUEST_URI']);
         }
 
         public static function member_badges_mode( $_id=null ) {
@@ -106,7 +109,7 @@ if (!class_exists('badges')) {
         }
 
         //public static function badge_edit_mode( $_mode=null , $_id=null ) {
-        public static function badge_edit_mode( $_id=null, $_mode='Create' ) {
+        public static function badge_edit_mode( $_id=null, $_mode='' ) {
 
             //if ($_mode==null){
             if ($_id==null){
@@ -196,9 +199,11 @@ if (!class_exists('badges')) {
                     $where = array('badge_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
                 }
+/*
+                ?><script>window.location=window.location.pathname</script><?php
+*/
+            } else {
 
-                ?><script>window.location=window.location.pathname</script><?php                
-            }
 
             /** 
              * edit_mode
@@ -241,6 +246,8 @@ if (!class_exists('badges')) {
             }
             $output .= '</form>';
             return $output;
+
+            }
         }
 
         //public static function member_edit_mode( $_mode=null , $_id=null ) {
