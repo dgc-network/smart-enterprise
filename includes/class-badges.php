@@ -113,10 +113,8 @@ if (!class_exists('badges')) {
 
         public static function badge_edit_mode( $_id=0, $_mode='' ) {
 
-            //if ($_id==null){
             if ($_id==0){
                 $_mode='Create';
-                //$_id=0;
             }
 
             if( isset($_POST['submit_action']) ) {
@@ -249,10 +247,8 @@ if (!class_exists('badges')) {
 
         public static function member_edit_mode( $_id=0, $_mode='' ) {
 
-            //if ($_id==null){
             if ($_id==0){
                 $_mode='Create';
-                //$_id=0;
             }
 
             if( isset($_POST['submit_action']) ) {
