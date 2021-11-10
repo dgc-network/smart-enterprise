@@ -121,8 +121,8 @@ if (!class_exists('badges')) {
                 //if ($_mode=='Create') {} else return 'id is required';                
             //}
 
-            //if( isset($_POST['submit_action']) ) {
-            if( isset($_GET['submit_action']) ) {
+            if( isset($_POST['submit_action']) ) {
+            //if( isset($_GET['submit_action']) ) {
                 if( $_POST['submit_action']=='Create' ) {
                     //return 'I am here';
         
@@ -200,6 +200,8 @@ if (!class_exists('badges')) {
                     $where = array('badge_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
                 }
+
+                $_GET['edit_mode']='';      
 /*
                 ?><script>window.location=window.location.pathname</script><?php
 */
@@ -212,8 +214,8 @@ if (!class_exists('badges')) {
             global $wpdb;
             $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}badges WHERE badge_id = {$_id}", OBJECT );
             $output  = '<h2>證照維護</h2>';
-            //$output .= '<form method="post">';
-            $output .= '<form method="get">';
+            $output .= '<form method="post">';
+            //$output .= '<form method="get">';
     
             if( $_mode=='Create' ) {
                 $output .= '<input type="hidden" value="Create Badge" name="edit_mode">';
