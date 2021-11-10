@@ -434,8 +434,8 @@ if (!class_exists('badges')) {
             $output .= '</tr>';
             foreach ($members as $index => $member) {
                 $output .= '<tr>';
-                $output .= '<td><a href="?edit_mode=edit_member&_id='.$member->member_id.'">'.$member->member_name.'</a>';
-                $output .= '(<a href="?edit_mode=member_badges&_id='.$member->member_id.'">'.$member->member_title.'</a>)</td>';
+                $output .= '<td><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_member&_id='.$member->member_id.'">'.$member->member_name.'</a>';
+                $output .= '(<a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=member_badges&_id='.$member->member_id.'">'.$member->member_title.'</a>)</td>';
                 foreach ($badges as $index => $badge) {
                     $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}member_badges WHERE member_id = {$member->member_id} AND badge_id = {$badge->badge_id}", OBJECT );
                     if (empty($row)) {
@@ -452,8 +452,8 @@ if (!class_exists('badges')) {
             $allowed_roles = array('editor', 'administrator', 'author');
             if( array_intersect($allowed_roles, $user->roles ) ) {
 
-                //$output .= '<form method="get">';
-                $output .= '<form method="post">';
+                $output .= '<form method="get">';
+                //$output .= '<form method="post">';
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
                 $output .= '<input class="wp-block-button__link" type="submit" value="Create Member" name="edit_mode">';
@@ -461,9 +461,9 @@ if (!class_exists('badges')) {
                 $output .= '<div class="wp-block-button">';
                 $output .= '<input class="wp-block-button__link" type="submit" value="Create Badge" name="edit_mode">';
                 $output .= '</div>';
-                $output .= '<div class="wp-block-button">';
-                $output .= '<a class="wp-block-button__link" href="/">Cancel</a>';
-                $output .= '</div>';
+                //$output .= '<div class="wp-block-button">';
+                //$output .= '<a class="wp-block-button__link" href="/">Cancel</a>';
+                //$output .= '</div>';
                 $output .= '</div>';
                 $output .= '</form>';
             }
