@@ -207,6 +207,7 @@ if (!class_exists('badges')) {
             $output .= '<form method="post">';
     
             if( $_mode=='Create' ) {
+                $output .= '<input type="hidden" value="Create Badge" name="edit_mode">';
                 $output .= '<figure class="wp-block-table"><table><tbody>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link"></td></tr>';
