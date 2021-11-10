@@ -201,7 +201,10 @@ if (!class_exists('badges')) {
                     $deleted = $wpdb->delete( $table, $where );
                 }
 
-                $_GET['edit_mode']='';      
+                $_GET['edit_mode']='';
+                $isTeacher = '1';
+                return self::list_mode( $isTeacher );
+    
 /*
                 ?><script>window.location=window.location.pathname</script><?php
 */
