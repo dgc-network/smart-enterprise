@@ -6,8 +6,8 @@ if (!class_exists('badges')) {
 
     class badges {
 
-        private $basename;
-        private $isTeacher;
+        private static $basename;
+        private static $isTeacher;
 
         /**
          * Class constructor
