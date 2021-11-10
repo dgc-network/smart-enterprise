@@ -63,6 +63,7 @@ if (!class_exists('badges')) {
             $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}members WHERE member_id = {$_id}", OBJECT );
             $output  = '<h2>個人認證項目</h2>';
             $output .= '<form method="post">';
+            $output .= '<input type="hidden" value="member_badges" name="edit_mode">';
             $output .= '<figure class="wp-block-table"><table><tbody>';
             $output .= '<tr><td>'.'Name:'.'</td><td>'.$row->member_name.'</td></tr>';
             $output .= '<tr><td>'.'Title:'.'</td><td>'.$row->member_title.'</td></tr>';
@@ -117,7 +118,7 @@ if (!class_exists('badges')) {
 
             if( isset($_POST['submit_action']) ) {
                 if( $_POST['submit_action']=='Create' ) {
-                    return 'I am here';
+                    //return 'I am here';
         
                     global $wpdb;          
                     $table = $wpdb->prefix.'badges';
@@ -193,9 +194,8 @@ if (!class_exists('badges')) {
                     $where = array('badge_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
                 }
-/*
-                ?><script>window.location=window.location.pathname</script><?php
-*/                
+
+                ?><script>window.location=window.location.pathname</script><?php                
             }
 
             /** 
@@ -222,6 +222,7 @@ if (!class_exists('badges')) {
                 $output .= '</div>';
                 $output .= '</div>';
             } else {
+                $output .= '<input type="hidden" value="edit_badge" name="edit_mode">';
                 $output .= '<figure class="wp-block-table"><table><tbody>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title" value="'.$row->badge_title.'"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link" value="'.$row->badge_link.'"></td></tr>';
@@ -343,6 +344,7 @@ if (!class_exists('badges')) {
             $output .= '<form method="post">';
     
             if( $_mode=='Create' ) {
+                $output .= '<input type="hidden" value="Create Member" name="edit_mode">';
                 $output .= '<figure class="wp-block-table"><table><tbody>';
                 $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name"></td></tr>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title"></td></tr>';
@@ -359,6 +361,7 @@ if (!class_exists('badges')) {
                 $output .= '</div>';
                 $output .= '</div>';
             } else {
+                $output .= '<input type="hidden" value="edit_member" name="edit_mode">';
                 $output .= '<figure class="wp-block-table"><table><tbody>';
                 $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name" value="'.$row->member_name.'"></td></tr>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title" value="'.$row->member_title.'"></td></tr>';
