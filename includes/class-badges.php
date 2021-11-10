@@ -111,12 +111,13 @@ if (!class_exists('badges')) {
                 $_id=0;
             }
 
-            if ($_id==null){
+            //if ($_id==null){
                 if ($_mode=='Create') {} else return 'id is required';                
-            }
+            //}
 
             if( isset($_POST['submit_action']) ) {
                 if( $_POST['submit_action']=='Create' ) {
+                    return 'I am here';
         
                     global $wpdb;          
                     $table = $wpdb->prefix.'badges';
@@ -192,8 +193,9 @@ if (!class_exists('badges')) {
                     $where = array('badge_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
                 }
-
+/*
                 ?><script>window.location=window.location.pathname</script><?php
+*/                
             }
 
             /** 
@@ -244,9 +246,9 @@ if (!class_exists('badges')) {
                 $_id=0;
             }
 
-            if ($_id==null){
+            //if ($_id==null){
                 if ($_mode=='Create') {} else return 'id is required';                
-            }
+            //}
 
             if( isset($_POST['submit_action']) ) {
                 if( $_POST['submit_action']=='Create' ) {
