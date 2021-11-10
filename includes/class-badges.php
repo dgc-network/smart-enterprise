@@ -16,7 +16,7 @@ if (!class_exists('badges')) {
             add_shortcode('teacher-badge-list', __CLASS__ . '::teacher_list_mode');
             add_shortcode('student-badge-list', __CLASS__ . '::student_list_mode');
             self::create_tables();
-            $this->basename = basename($_SERVER['REQUEST_URI']);
+            //$this->basename = basename($_SERVER['REQUEST_URI']);
         }
 
         public static function member_badges_mode( $_id=null ) {
@@ -31,7 +31,7 @@ if (!class_exists('badges')) {
                     $_GET['edit_mode']='';
                     //$isTeacher = '1';
                     //return self::list_mode( $isTeacher );
-                    return self::list_mode( $this->isTeacher );
+                    return self::list_mode( self::$isTeacher );
                 }
 
                 global $wpdb;
@@ -213,7 +213,7 @@ if (!class_exists('badges')) {
                 $_GET['edit_mode']='';
                 //$isTeacher = '1';
                 //return self::list_mode( $isTeacher );
-                return self::list_mode( $this->isTeacher );
+                return self::list_mode( self::$isTeacher );
     
 /*
                 ?><script>window.location=window.location.pathname</script><?php
@@ -362,7 +362,7 @@ if (!class_exists('badges')) {
                 $_GET['edit_mode']='';
                 //$isTeacher = '1';
                 //return self::list_mode( $isTeacher );
-                return self::list_mode( $this->isTeacher );
+                return self::list_mode( self::$isTeacher );
 
 /*
                 ?><script>window.location=window.location.pathname</script><?php
@@ -422,15 +422,15 @@ if (!class_exists('badges')) {
         public static function teacher_list_mode() {
             //$isTeacher = '1';
             //return self::list_mode( $isTeacher );
-            $this->isTeacher = '1';
-            return self::list_mode( $this->isTeacher );
+            self::$isTeacher = '1';
+            return self::list_mode( self::$isTeacher );
         }
 
         public static function student_list_mode() {
             //$isTeacher = '0';
             //return self::list_mode( $isTeacher );
-            $this->isTeacher = '0';
-            return self::list_mode( $this->isTeacher );
+            self::$isTeacher = '0';
+            return self::list_mode( self::$isTeacher );
         }
 
         public static function list_mode( $isTeacher ) {
