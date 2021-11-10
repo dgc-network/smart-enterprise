@@ -493,8 +493,8 @@ if (!class_exists('badges')) {
             $allowed_roles = array('editor', 'administrator', 'author');
             if( array_intersect($allowed_roles, $user->roles ) ) {
 
-                $output .= '<form method="get">';
-                //$output .= '<form method="post">';
+                //$output .= '<form method="get">';
+                $output .= '<form method="post">';
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
                 $output .= '<input class="wp-block-button__link" type="submit" value="Create Member" name="edit_mode">';
