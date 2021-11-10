@@ -427,7 +427,9 @@ if (!class_exists('badges')) {
             foreach ($badges as $index => $badge) {
                 //$output .= '<td><a href="?edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
                 //$output .= '<input class="wp-block-button__link" type="submit" value="Create Member" name="edit_mode">';
-                $output .= '<td><input type="button" value="'.$badge->badge_title.'" name="edit_mode"></td>';
+                $output .= '<td><form method="post">';
+                $output .= '<button type="button" name="edit_mode" value="edit_badge">'.$badge->badge_title.'</button>';
+                $output .= '</form></td>';
             }
             $output .= '</tr>';
             foreach ($members as $index => $member) {
