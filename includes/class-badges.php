@@ -419,15 +419,23 @@ if (!class_exists('badges')) {
             } else {
                 //$output  = '<h2>學生考取相關證照紀錄</h2>';
             }
+            $user = wp_get_current_user();
+            $allowed_roles = array('editor', 'administrator', 'author');
             $output = '<figure class="wp-block-table"><table><tbody>';
-            $output .= '<tr><td>#</td><td style="column-width:150px;border:1px solid">證照紀錄</td>';
+            $output .= '<tr><td style="border:1px solid">#</td>';
+            $output .= '<td style="column-width:150px;border:1px solid">證照紀錄</td>';
             foreach ($badges as $index => $badge) {
-                $output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
+                //$output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
+                $output .= '<td style="border:1px solid"><a href="'.$badge->badge_link.'">'.$badge->badge_title.'</a>';
+                if( array_intersect($allowed_roles, $user->roles ) ) {
+                    //$output .= '<a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
+                    $output .= '<input class="wp-block-button__link" type="submit" value="Edit" name="edit_mode">';
+                }
             }
             $output .= '</tr>';
             foreach ($members as $index => $member) {
                 $output .= '<tr>';
-                $output .= '<td>'.$index.'</td>';
+                $output .= '<td style="border:1px solid">'.($index+1).'</td>';
                 $output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_member&_id='.$member->member_id.'">'.$member->member_name.'</a>';
                 $output .= '(<a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=member_badges&_id='.$member->member_id.'">'.$member->member_title.'</a>)</td>';
                 foreach ($badges as $index => $badge) {
@@ -435,17 +443,14 @@ if (!class_exists('badges')) {
                     if (empty($row)) {
                         $output .= '<td style="border:1px solid"></td>';
                     } else {
-                        $output .= '<td style="border:1px solid"><img style="height:100px;width:100px" src="'.$badge->image_link.'" data-id="'.$badge->badge_id.'"></td>';
+                        $output .= '<td style="border:1px solid"><img style="height:80px;width:80px" src="'.$badge->image_link.'" data-id="'.$badge->badge_id.'"></td>';
                     }
                 }
                 $output .= '</tr>';
             }
             $output .= '</tbody></table></figure>';
             
-            $user = wp_get_current_user();
-            $allowed_roles = array('editor', 'administrator', 'author');
             if( array_intersect($allowed_roles, $user->roles ) ) {
-
                 $output .= '<form method="post">';
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
