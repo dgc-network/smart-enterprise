@@ -435,7 +435,7 @@ if (!class_exists('badges')) {
                     if (empty($row)) {
                         $output .= '<td style="border:1px solid"></td>';
                     } else {
-                        $output .= '<td style="border:1px solid"><img src="'.$badge->image_link.'" data-id="'.$badge->badge_id.'"></td>';
+                        $output .= '<td style="border:1px solid"><img style="height:100px;width:100px" src="'.$badge->image_link.'" data-id="'.$badge->badge_id.'"></td>';
                     }
                 }
                 $output .= '</tr>';
