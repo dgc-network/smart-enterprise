@@ -419,8 +419,8 @@ if (!class_exists('badges')) {
             } else {
                 //$output  = '<h2>學生考取相關證照紀錄</h2>';
             }
-            $output .= '<figure class="wp-block-table"><table><tbody>';
-            $output .= '<tr><td style="border:1px solid">證照紀錄</td>';
+            $output = '<figure class="wp-block-table"><table><tbody>';
+            $output .= '<tr><td style="width:150px;border:1px solid">證照紀錄</td>';
             foreach ($badges as $index => $badge) {
                 $output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
             }
