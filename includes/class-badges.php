@@ -84,8 +84,7 @@ if (!class_exists('badges')) {
                             );
                             $format = array('%d', '%d');
                             $wpdb->insert($table, $data, $format);
-                        }
-        
+                        }        
                     }
                 }
             
@@ -143,7 +142,7 @@ if (!class_exists('badges')) {
             /** 
              * member_badges footer
              */
-            $output .= '</tbody></table></figure>';
+            //$output .= '</tbody></table></figure>';
             $output .= '<div class="wp-block-buttons">';
             $output .= '<div class="wp-block-button">';
             $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="submit_action">';
@@ -258,7 +257,7 @@ if (!class_exists('badges')) {
             }
 
             if( isset($_POST['submit_action']) ) {
-                return 'I am here';
+                //return 'I am here';
 
                 if( $_POST['submit_action']=='Create' ) {
         
