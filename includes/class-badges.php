@@ -258,6 +258,7 @@ if (!class_exists('badges')) {
             }
 
             if( isset($_POST['submit_action']) ) {
+
                 if( $_POST['submit_action']=='Create' ) {
         
                     global $wpdb;          
@@ -297,6 +298,7 @@ if (!class_exists('badges')) {
                 }
     
                 if( $_POST['submit_action']=='Update' ) {
+                    return 'I am here';
     /*        
                     $UpdateCourseAction = new UpdateCourseAction();                
                     $UpdateCourseAction->setCourseId(intval($_POST['_course_id']));
@@ -338,51 +340,49 @@ if (!class_exists('badges')) {
                 $_GET['edit_mode']='';
                 $_POST['edit_mode']='';
                 return self::list_mode( self::$isTeacher );
-
-            } else {
-                /** 
-                 * edit_mode
-                 */
-                global $wpdb;
-                $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}badges WHERE badge_id = {$_id}", OBJECT );
-                $output  = '<h2>證照維護</h2>';
-                $output .= '<form method="post">';
-        
-                if( $_mode=='Create' ) {
-                    $output .= '<input type="hidden" value="Create Badge" name="edit_mode">';
-                    $output .= '<figure class="wp-block-table"><table><tbody>';
-                    $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title"></td></tr>';
-                    $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link"></td></tr>';
-                    $output .= '<tr><td>'.'Image:'.'</td><td><input style="width: 100%" type="text" name="_image_link"></td></tr>';
-                    $output .= '</tbody></table></figure>';
-                    $output .= '<div class="wp-block-buttons">';
-                    $output .= '<div class="wp-block-button">';
-                    $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="submit_action">';
-                    $output .= '</div>';
-                    $output .= '<div class="wp-block-button">';
-                    $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="submit_action">';
-                    $output .= '</div>';
-                    $output .= '</div>';
-                } else {
-                    $output .= '<input type="hidden" value="edit_badge" name="edit_mode">';
-                    $output .= '<figure class="wp-block-table"><table><tbody>';
-                    $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title" value="'.$row->badge_title.'"></td></tr>';
-                    $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link" value="'.$row->badge_link.'"></td></tr>';
-                    $output .= '<tr><td>'.'Image:'.'</td><td><input style="width: 100%" type="text" name="_image_link" value="'.$row->image_link.'"></td></tr>';
-                    $output .= '</tbody></table></figure>';
-                    $output .= '<div class="wp-block-buttons">';
-                    $output .= '<div class="wp-block-button">';
-                    $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="submit_action">';
-                    $output .= '</div>';
-                    $output .= '<div class="wp-block-button">';
-                    $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="submit_action">';
-                    $output .= '</div>';
-                    $output .= '</div>';
-                }
-                $output .= '</form>';
-                return $output;
-    
             }
+
+            /** 
+             * edit_mode
+             */
+            global $wpdb;
+            $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}badges WHERE badge_id = {$_id}", OBJECT );
+            $output  = '<h2>證照維護</h2>';
+            $output .= '<form method="post">';
+    
+            if( $_mode=='Create' ) {
+                $output .= '<input type="hidden" value="Create Badge" name="edit_mode">';
+                $output .= '<figure class="wp-block-table"><table><tbody>';
+                $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title"></td></tr>';
+                $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link"></td></tr>';
+                $output .= '<tr><td>'.'Image:'.'</td><td><input style="width: 100%" type="text" name="_image_link"></td></tr>';
+                $output .= '</tbody></table></figure>';
+                $output .= '<div class="wp-block-buttons">';
+                $output .= '<div class="wp-block-button">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="submit_action">';
+                $output .= '</div>';
+                $output .= '<div class="wp-block-button">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="submit_action">';
+                $output .= '</div>';
+                $output .= '</div>';
+            } else {
+                $output .= '<input type="hidden" value="edit_badge" name="edit_mode">';
+                $output .= '<figure class="wp-block-table"><table><tbody>';
+                $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title" value="'.$row->badge_title.'"></td></tr>';
+                $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link" value="'.$row->badge_link.'"></td></tr>';
+                $output .= '<tr><td>'.'Image:'.'</td><td><input style="width: 100%" type="text" name="_image_link" value="'.$row->image_link.'"></td></tr>';
+                $output .= '</tbody></table></figure>';
+                $output .= '<div class="wp-block-buttons">';
+                $output .= '<div class="wp-block-button">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="submit_action">';
+                $output .= '</div>';
+                $output .= '<div class="wp-block-button">';
+                $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="submit_action">';
+                $output .= '</div>';
+                $output .= '</div>';
+            }
+            $output .= '</form>';
+            return $output;
         }
 
         public static function member_edit_mode( $_id=0, $_mode='' ) {
