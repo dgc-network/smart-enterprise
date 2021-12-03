@@ -17,67 +17,14 @@ if (!class_exists('badges')) {
             self::create_tables();
         }
 
-        public static function member_badge_edit_mode( $_id=0, $_mode='' ) {
+        public static function member_badge_edit_mode( $_id=0 ) {
 
             if ($_id==0){
-                $_mode='Create';
-            }
-/*
-            if ($_id==null){
                 return '<div>ID is required</div>';
             }
 
-            if( isset($_POST['submit_action']) ) {        
-
-                if( $_POST['submit_action']=='Cancel' ) {
-                    $_GET['edit_mode']='';
-                    $_POST['edit_mode']='';
-                    return self::list_mode( self::$isTeacher );
-                }
-
-            }
-*/
             if( isset($_POST['submit_action']) ) {
-                
-                if( $_POST['submit_action']=='Create' ) {
-        
-                    global $wpdb;          
-                    $table = $wpdb->prefix.'members';
-                    $data = array(
-                        'member_name' => $_POST['_member_name'],
-                        'member_title' => $_POST['_member_title'],
-                        'member_link' => $_POST['_member_link'],
-                        'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
-                    );
-                    $format = array('%s', '%s', '%s', '%d');
-                    $insert_id = $wpdb->insert($table, $data, $format);
-    /*
-                    $CreateCourseAction = new CreateCourseAction();                
-                    //$CreateCourseAction->setCourseId(intval($_POST['_course_id']));
-                    $CreateCourseAction->setCourseId(intval($insert_id));
-                    $CreateCourseAction->setCourseTitle($_POST['_course_title']);
-                    $CreateCourseAction->setCreatedDate(intval(current_time('timestamp')));
-                    //$CreateCourseAction->setListPrice(floatval($_POST['_list_price']));
-                    //$CreateCourseAction->setSalePrice(floadval($_POST['_sale_price']));
-                    $CreateCourseAction->setPublicKey($_POST['_public_key']);
-                    $send_data = $CreateCourseAction->serializeToString();
-    
-                    $op_result = OP_RETURN_send(OP_RETURN_SEND_ADDRESS, OP_RETURN_SEND_AMOUNT, $send_data);
-    
-                    if (isset($op_result['error'])) {    
-                        $result_output = 'Error: '.$op_result['error']."\n";
-                        return $result_output;
-                    } else {    
-                        $table = $wpdb->prefix.'badges';
-                        $data = array(
-                            'txid' => $op_result['txid'], 
-                        );
-                        $where = array('course_id' => $insert_id);
-                        $wpdb->update( $table, $data, $where );
-                    }
-*/                    
-                }
-    
+
                 if( $_POST['submit_action']=='Update' ) {
     /*        
                     $UpdateCourseAction = new UpdateCourseAction();                
@@ -153,17 +100,14 @@ if (!class_exists('badges')) {
                     $where = array('member_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
                 }
-
                 
                 $_GET['edit_mode']='';
                 $_POST['edit_mode']='';
                 return self::list_mode( self::$isTeacher );
-
-            //} else {
             }
 
             /** 
-             * edit_mode
+             * member_badges header
              */
             global $wpdb;
             $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}members WHERE member_id = {$_id}", OBJECT );
@@ -177,43 +121,7 @@ if (!class_exists('badges')) {
             $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
             if ($row->is_teacher) $output .= ' value="true" checked';
             $output .= '></td>';
-/*
-            if( $_mode=='Create' ) {
-                $output .= '<input type="hidden" value="Create Member" name="edit_mode">';
-                $output .= '<figure class="wp-block-table"><table><tbody>';
-                $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name"></td></tr>';
-                $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title"></td></tr>';
-                $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_member_link"></td></tr>';
-                $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
-                $output .= '></td>';
-                $output .= '</tbody></table></figure>';
-                $output .= '<div class="wp-block-buttons">';
-                $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Create" name="submit_action">';
-                $output .= '</div>';
-                $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="submit_action">';
-                $output .= '</div>';
-                $output .= '</div>';
-            } else {
-            }
-            //$output .= '</form>';
-            //return $output;
-*/
-            /** 
-             * member_badges header
-             */
-/*            
-            global $wpdb;
-            $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}members WHERE member_id = {$_id}", OBJECT );
-            $output  = '<h2>個人認證項目</h2>';
-            $output .= '<form method="post">';
-            $output .= '<input type="hidden" value="member_badges" name="edit_mode">';
-            $output .= '<figure class="wp-block-table"><table><tbody>';
-            $output .= '<tr><td>'.'Name:'.'</td><td>'.$row->member_name.'</td></tr>';
-            $output .= '<tr><td>'.'Title:'.'</td><td>'.$row->member_title.'</td></tr>';
-            $output .= '</tbody></table></figure>';
-*/
+
             /** 
              * member_badges body
              */
@@ -244,16 +152,6 @@ if (!class_exists('badges')) {
             $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="submit_action">';
             $output .= '</div>';
             $output .= '</div>';
-/*            
-            $output .= '<div class="wp-block-buttons">';
-            $output .= '<div class="wp-block-button">';
-            $output .= '<input class="wp-block-button__link" type="submit" value="Submit" name="submit_action">';
-            $output .= '</div>';
-            $output .= '<div class="wp-block-button">';
-            $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="submit_action">';
-            $output .= '</div>';
-            $output .= '</div>';
-*/            
             $output .= '</form>';
 
             return $output;
@@ -671,7 +569,7 @@ if (!class_exists('badges')) {
             $output .= '<td style="column-width:150px;border:1px solid">證照紀錄</td>';
             foreach ($badges as $index => $badge) {
                 //$output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
-                $output .= '<td style="border:1px solid"><a href="'.$badge->badge_link.'">'.$badge->badge_title.'</a>';
+                $output .= '<td style="text-align:center;border:1px solid"><a href="'.$badge->badge_link.'">'.$badge->badge_title.'</a>';
                 if( array_intersect($allowed_roles, $user->roles ) ) {
                     $output .= '<form method="post">';
                     $output .= '<input type="hidden" name="_id" value="'.$badge->badge_id.'">';
@@ -686,7 +584,7 @@ if (!class_exists('badges')) {
                 $output .= '<td style="text-align:center;border:1px solid">'.($index+1).'</td>';
                 //$output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_member&_id='.$member->member_id.'">'.$member->member_name.'</a>';
                 //$output .= '(<a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=member_badges&_id='.$member->member_id.'">'.$member->member_title.'</a>)</td>';
-                $output .= '<td style="border:1px solid"><a href="'.$member->member_link.'">'.$member->member_name.'('.$member->member_title.')</a>';
+                $output .= '<td style="text-align:center;border:1px solid"><a href="'.$member->member_link.'">'.$member->member_name.'('.$member->member_title.')</a>';
                 if( array_intersect($allowed_roles, $user->roles ) ) {
                     $output .= '<form method="post">';
                     $output .= '<input type="hidden" name="_id" value="'.$member->member_id.'">';
@@ -699,7 +597,7 @@ if (!class_exists('badges')) {
                     if (empty($row)) {
                         $output .= '<td style="border:1px solid"></td>';
                     } else {
-                        $output .= '<td style="border:1px solid"><img style="height:80px;width:80px" src="'.$badge->image_link.'" data-id="'.$badge->badge_id.'"></td>';
+                        $output .= '<td style="text-align:center;border:1px solid"><img style="height:80px;width:80px" src="'.$badge->image_link.'" data-id="'.$badge->badge_id.'"></td>';
                     }
                 }
                 $output .= '</tr>';
