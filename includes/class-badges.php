@@ -26,7 +26,7 @@ if (!class_exists('badges')) {
             if( isset($_POST['submit_action']) ) {
 
                 if( $_POST['submit_action']=='Cancel' ) {
-                    $_GET['edit_mode']='';
+                    //$_GET['edit_mode']='';
                     $_POST['edit_mode']='';
                     return self::list_mode( self::$isTeacher );
                 }
@@ -105,7 +105,7 @@ if (!class_exists('badges')) {
                     $where = array('member_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
                 
-                    $_GET['edit_mode']='';
+                    //$_GET['edit_mode']='';
                     $_POST['edit_mode']='';
                     return self::list_mode( self::$isTeacher );
                 }
@@ -119,6 +119,7 @@ if (!class_exists('badges')) {
             $output  = '<h2>人員維護</h2>';
             $output .= '<form method="post">';
             $output .= '<input type="hidden" value="edit" name="edit_mode">';
+            $output .= '<input type="hidden" value="'.$_id.'" name="_id">';
             $output .= '<figure class="wp-block-table"><table><tbody>';
             $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name" value="'.$row->member_name.'"></td></tr>';
             $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title" value="'.$row->member_title.'"></td></tr>';
@@ -345,7 +346,7 @@ if (!class_exists('badges')) {
                     $deleted = $wpdb->delete( $table, $where );
                 }
 
-                $_GET['edit_mode']='';
+                //$_GET['edit_mode']='';
                 $_POST['edit_mode']='';
                 return self::list_mode( self::$isTeacher );
             }
@@ -376,6 +377,7 @@ if (!class_exists('badges')) {
             } else {
                 //$output .= '<input type="hidden" value="edit_badge" name="edit_mode">';
                 $output .= '<input type="hidden" value="Edit" name="edit_mode">';
+                $output .= '<input type="hidden" value="'.$_id.'" name="_id">';
                 $output .= '<figure class="wp-block-table"><table><tbody>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title" value="'.$row->badge_title.'"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link" value="'.$row->badge_link.'"></td></tr>';
@@ -553,13 +555,13 @@ if (!class_exists('badges')) {
                 //if ($_POST['edit_mode']=='edit') return self::member_edit_mode( $_POST['_id'] );
                 if ($_POST['edit_mode']=='edit') return self::member_badge_edit_mode( $_POST['_id'] );
             }            
-
+/*
             if( isset($_GET['edit_mode']) ) {
                 if ($_GET['edit_mode']=='edit_badge') return self::badge_edit_mode( $_GET['_id'] );
                 if ($_GET['edit_mode']=='edit_member') return self::member_edit_mode( $_GET['_id'] );
                 if ($_GET['edit_mode']=='member_badges') return self::member_badges_mode( $_GET['_id'] );
             }            
-
+*/
             /**
              * List Mode
              */
