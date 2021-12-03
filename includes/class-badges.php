@@ -17,7 +17,7 @@ if (!class_exists('badges')) {
             self::create_tables();
         }
 
-        public static function member_badges_edit_mode( $_id=0, $_mode='' ) {
+        public static function member_badge_edit_mode( $_id=0, $_mode='' ) {
 
             if ($_id==0){
                 $_mode='Create';
