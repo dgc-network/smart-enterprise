@@ -25,6 +25,12 @@ if (!class_exists('badges')) {
 
             if( isset($_POST['submit_action']) ) {
 
+                if( $_POST['submit_action']=='Cancel' ) {
+                    $_GET['edit_mode']='';
+                    $_POST['edit_mode']='';
+                    return self::list_mode( self::$isTeacher );
+                }
+
                 if( $_POST['submit_action']=='Update' ) {
     /*        
                     $UpdateCourseAction = new UpdateCourseAction();                
@@ -98,11 +104,11 @@ if (!class_exists('badges')) {
                     $table = $wpdb->prefix.'member_badges';
                     $where = array('member_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
-                }
                 
-                $_GET['edit_mode']='';
-                $_POST['edit_mode']='';
-                return self::list_mode( self::$isTeacher );
+                    $_GET['edit_mode']='';
+                    $_POST['edit_mode']='';
+                    return self::list_mode( self::$isTeacher );
+                }
             }
 
             /** 
@@ -112,7 +118,7 @@ if (!class_exists('badges')) {
             $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}members WHERE member_id = {$_id}", OBJECT );
             $output  = '<h2>人員維護</h2>';
             $output .= '<form method="post">';
-            $output .= '<input type="hidden" value="edit_member" name="edit_mode">';
+            $output .= '<input type="hidden" value="edit" name="edit_mode">';
             $output .= '<figure class="wp-block-table"><table><tbody>';
             $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name" value="'.$row->member_name.'"></td></tr>';
             $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title" value="'.$row->member_title.'"></td></tr>';
@@ -144,6 +150,9 @@ if (!class_exists('badges')) {
              */
             //$output .= '</tbody></table></figure>';
             $output .= '<div class="wp-block-buttons">';
+            $output .= '<div class="wp-block-button">';
+            $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="submit_action">';
+            $output .= '</div>';
             $output .= '<div class="wp-block-button">';
             $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="submit_action">';
             $output .= '</div>';
@@ -350,7 +359,7 @@ if (!class_exists('badges')) {
             $output .= '<form method="post">';
     
             if( $_mode=='Create' ) {
-                //$output .= '<input type="hidden" value="Create Badge" name="edit_mode">';
+                $output .= '<input type="hidden" value="Create Badge" name="edit_mode">';
                 $output .= '<figure class="wp-block-table"><table><tbody>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link"></td></tr>';
@@ -366,6 +375,7 @@ if (!class_exists('badges')) {
                 $output .= '</div>';
             } else {
                 //$output .= '<input type="hidden" value="edit_badge" name="edit_mode">';
+                $output .= '<input type="hidden" value="Edit" name="edit_mode">';
                 $output .= '<figure class="wp-block-table"><table><tbody>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title" value="'.$row->badge_title.'"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link" value="'.$row->badge_link.'"></td></tr>';
@@ -485,7 +495,7 @@ if (!class_exists('badges')) {
             $output .= '<form method="post">';
     
             if( $_mode=='Create' ) {
-                //$output .= '<input type="hidden" value="Create Member" name="edit_mode">';
+                $output .= '<input type="hidden" value="Create Member" name="edit_mode">';
                 $output .= '<figure class="wp-block-table"><table><tbody>';
                 $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name"></td></tr>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title"></td></tr>';
