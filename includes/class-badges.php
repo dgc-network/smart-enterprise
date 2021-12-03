@@ -400,6 +400,8 @@ if (!class_exists('badges')) {
             if( isset($_POST['edit_mode']) ) {
                 if ($_POST['edit_mode']=='Create Badge') return self::badge_edit_mode();
                 if ($_POST['edit_mode']=='Create Member') return self::member_edit_mode();
+                if ($_POST['edit_mode']=='Edit') return self::badge_edit_mode( $_POST['_id'] );
+                if ($_POST['edit_mode']=='edit') return self::member_edit_mode( $_POST['_id'] );
             }            
 
             if( isset($_GET['edit_mode']) ) {
@@ -428,16 +430,27 @@ if (!class_exists('badges')) {
                 //$output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
                 $output .= '<td style="border:1px solid"><a href="'.$badge->badge_link.'">'.$badge->badge_title.'</a>';
                 if( array_intersect($allowed_roles, $user->roles ) ) {
-                    //$output .= '<a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
+                    $output .= '<form method="post">';
+                    $output .= '<input type="hidden" name="_id" value="'.$badge->badge_id.'">';
                     $output .= '<input class="wp-block-button__link" type="submit" value="Edit" name="edit_mode">';
+                    $output .= '</form>';
                 }
+                $output .= '</td>';
             }
             $output .= '</tr>';
             foreach ($members as $index => $member) {
                 $output .= '<tr>';
                 $output .= '<td style="border:1px solid">'.($index+1).'</td>';
-                $output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_member&_id='.$member->member_id.'">'.$member->member_name.'</a>';
-                $output .= '(<a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=member_badges&_id='.$member->member_id.'">'.$member->member_title.'</a>)</td>';
+                //$output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_member&_id='.$member->member_id.'">'.$member->member_name.'</a>';
+                //$output .= '(<a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=member_badges&_id='.$member->member_id.'">'.$member->member_title.'</a>)</td>';
+                $output .= '<td style="border:1px solid"><a href="'.$member->member_link.'">'.$member->member_name.'('.$member->member_title.')</a>';
+                if( array_intersect($allowed_roles, $user->roles ) ) {
+                    $output .= '<form method="post">';
+                    $output .= '<input type="hidden" name="_id" value="'.$member->member_id.'">';
+                    $output .= '<input class="wp-block-button__link" type="submit" value="edit" name="edit_mode">';
+                    $output .= '</form>';
+                }
+                $output .= '</td>';
                 foreach ($badges as $index => $badge) {
                     $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}member_badges WHERE member_id = {$member->member_id} AND badge_id = {$badge->badge_id}", OBJECT );
                     if (empty($row)) {
