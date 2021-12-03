@@ -22,7 +22,7 @@ if (!class_exists('badges')) {
             if ($_id==0){
                 $_mode='Create';
             }
-
+/*
             if ($_id==null){
                 return '<div>ID is required</div>';
             }
@@ -35,40 +35,10 @@ if (!class_exists('badges')) {
                     return self::list_mode( self::$isTeacher );
                 }
 
-                global $wpdb;
-                $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}member_badges WHERE member_id = {$_id}", OBJECT );
-                foreach ($results as $index => $result) {
-                    if (( $_POST['_badge_id_'.$index]=='delete_select' )){
-                        $table = $wpdb->prefix.'member_badges';
-                        $where = array(
-                            'm_b_id' => $results[$index]->m_b_id
-                        );
-                        $wpdb->delete( $table, $where );    
-                    } else {
-                        $table = $wpdb->prefix.'member_badges';
-                        $data = array(
-                            'badge_id' => $_POST['_badge_id_'.$index],
-                        );
-                        $where = array(
-                            'm_b_id' => $results[$index]->m_b_id
-                        );
-                        $wpdb->update( $table, $data, $where );    
-                    }
-                }
-
-                if ( !($_POST['_badge_id']=='no_select') ){
-                    $table = $wpdb->prefix.'member_badges';
-                    $data = array(
-                        'badge_id' => $_POST['_badge_id'],
-                        'member_id' => $_POST['_member_id'],
-                    );
-                    $format = array('%d', '%d');
-                    $wpdb->insert($table, $data, $format);
-                }
-
             }
-
+*/
             if( isset($_POST['submit_action']) ) {
+                
                 if( $_POST['submit_action']=='Create' ) {
         
                     global $wpdb;          
@@ -137,6 +107,38 @@ if (!class_exists('badges')) {
                         );
                         $where = array('member_id' => $_id);
                         $wpdb->update( $table, $data, $where );
+
+                        global $wpdb;
+                        $results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}member_badges WHERE member_id = {$_id}", OBJECT );
+                        foreach ($results as $index => $result) {
+                            if (( $_POST['_badge_id_'.$index]=='delete_select' )){
+                                $table = $wpdb->prefix.'member_badges';
+                                $where = array(
+                                    'm_b_id' => $results[$index]->m_b_id
+                                );
+                                $wpdb->delete( $table, $where );    
+                            } else {
+                                $table = $wpdb->prefix.'member_badges';
+                                $data = array(
+                                    'badge_id' => $_POST['_badge_id_'.$index],
+                                );
+                                $where = array(
+                                    'm_b_id' => $results[$index]->m_b_id
+                                );
+                                $wpdb->update( $table, $data, $where );    
+                            }
+                        }
+        
+                        if ( !($_POST['_badge_id']=='no_select') ){
+                            $table = $wpdb->prefix.'member_badges';
+                            $data = array(
+                                'badge_id' => $_POST['_badge_id'],
+                                'member_id' => $_POST['_member_id'],
+                            );
+                            $format = array('%d', '%d');
+                            $wpdb->insert($table, $data, $format);
+                        }
+        
                     }
                 }
             
@@ -146,6 +148,10 @@ if (!class_exists('badges')) {
                     $table = $wpdb->prefix.'members';
                     $where = array('member_id' =>  $_id);
                     $deleted = $wpdb->delete( $table, $where );
+
+                    $table = $wpdb->prefix.'member_badges';
+                    $where = array('member_id' =>  $_id);
+                    $deleted = $wpdb->delete( $table, $where );
                 }
 
                 
@@ -153,7 +159,7 @@ if (!class_exists('badges')) {
                 $_POST['edit_mode']='';
                 return self::list_mode( self::$isTeacher );
 
-            } else {
+            //} else {
             }
 
             /** 
@@ -163,7 +169,15 @@ if (!class_exists('badges')) {
             $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}members WHERE member_id = {$_id}", OBJECT );
             $output  = '<h2>人員維護</h2>';
             $output .= '<form method="post">';
-    
+            $output .= '<input type="hidden" value="edit_member" name="edit_mode">';
+            $output .= '<figure class="wp-block-table"><table><tbody>';
+            $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name" value="'.$row->member_name.'"></td></tr>';
+            $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title" value="'.$row->member_title.'"></td></tr>';
+            $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_member_link" value="'.$row->member_link.'"></td></tr>';
+            $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
+            if ($row->is_teacher) $output .= ' value="true" checked';
+            $output .= '></td>';
+/*
             if( $_mode=='Create' ) {
                 $output .= '<input type="hidden" value="Create Member" name="edit_mode">';
                 $output .= '<figure class="wp-block-table"><table><tbody>';
@@ -182,27 +196,10 @@ if (!class_exists('badges')) {
                 $output .= '</div>';
                 $output .= '</div>';
             } else {
-                $output .= '<input type="hidden" value="edit_member" name="edit_mode">';
-                $output .= '<figure class="wp-block-table"><table><tbody>';
-                $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name" value="'.$row->member_name.'"></td></tr>';
-                $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title" value="'.$row->member_title.'"></td></tr>';
-                $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_member_link" value="'.$row->member_link.'"></td></tr>';
-                $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
-                if ($row->is_teacher) $output .= ' value="true" checked';
-                $output .= '></td>';
-                $output .= '</tbody></table></figure>';
-                $output .= '<div class="wp-block-buttons">';
-                $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="submit_action">';
-                $output .= '</div>';
-                $output .= '<div class="wp-block-button">';
-                $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="submit_action">';
-                $output .= '</div>';
-                $output .= '</div>';
             }
-            $output .= '</form>';
+            //$output .= '</form>';
             //return $output;
-
+*/
             /** 
              * member_badges header
              */
@@ -238,6 +235,16 @@ if (!class_exists('badges')) {
             /** 
              * member_badges footer
              */
+            $output .= '</tbody></table></figure>';
+            $output .= '<div class="wp-block-buttons">';
+            $output .= '<div class="wp-block-button">';
+            $output .= '<input class="wp-block-button__link" type="submit" value="Update" name="submit_action">';
+            $output .= '</div>';
+            $output .= '<div class="wp-block-button">';
+            $output .= '<input class="wp-block-button__link" type="submit" value="Delete" name="submit_action">';
+            $output .= '</div>';
+            $output .= '</div>';
+/*            
             $output .= '<div class="wp-block-buttons">';
             $output .= '<div class="wp-block-button">';
             $output .= '<input class="wp-block-button__link" type="submit" value="Submit" name="submit_action">';
@@ -246,6 +253,7 @@ if (!class_exists('badges')) {
             $output .= '<input class="wp-block-button__link" type="submit" value="Cancel" name="submit_action">';
             $output .= '</div>';
             $output .= '</div>';
+*/            
             $output .= '</form>';
 
             return $output;
