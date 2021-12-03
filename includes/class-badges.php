@@ -566,7 +566,7 @@ if (!class_exists('badges')) {
             $allowed_roles = array('editor', 'administrator', 'author');
             $output = '<figure class="wp-block-table"><table><tbody>';
             $output .= '<tr><td style="text-align:center;border:1px solid">#</td>';
-            $output .= '<td style="column-width:150px;border:1px solid">證照紀錄</td>';
+            $output .= '<td style="text-align:center;border:1px solid">證照紀錄</td>';
             foreach ($badges as $index => $badge) {
                 //$output .= '<td style="border:1px solid"><a href="'.basename($_SERVER['REQUEST_URI']).'&edit_mode=edit_badge&_id='.$badge->badge_id.'">'.$badge->badge_title.'</a></td>';
                 $output .= '<td style="text-align:center;border:1px solid"><a href="'.$badge->badge_link.'">'.$badge->badge_title.'</a>';
