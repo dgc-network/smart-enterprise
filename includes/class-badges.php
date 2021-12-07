@@ -412,7 +412,9 @@ if (!class_exists('badges')) {
             $output .= '<label style="display:block; width:100px;">證照紀錄</label>';
             $output .= '</td>';
             foreach ($badges as $index => $badge) {
-                $output .= '<td style="text-align:center;border:1px solid"><a href="'.$badge->badge_link.'">'.$badge->badge_title.'</a>';
+                //$output .= '<td style="text-align:center;border:1px solid"><a href="'.$badge->badge_link.'">'.$badge->badge_title.'</a>';
+                $output .= '<td style="text-align:center;border:1px solid">';
+                $output .= '<label style="display:block; width:100px;"><a href="'.$badge->badge_link.'">'.$badge->badge_title.'</a></label>';
                 if( array_intersect($allowed_roles, $user->roles ) ) {
                     $output .= '<form method="post">';
                     $output .= '<input type="hidden" name="_id" value="'.$badge->badge_id.'">';
