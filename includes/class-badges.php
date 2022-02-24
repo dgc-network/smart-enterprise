@@ -54,6 +54,7 @@ if (!class_exists('badges')) {
                             'member_name' => $_POST['_member_name'],
                             'member_title' => $_POST['_member_title'],
                             'member_link' => $_POST['_member_link'],
+                            'badge_count' => $_POST['_badge_count'],
                             'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
                             //'txid' => $op_result['txid'], 
                         );
@@ -122,6 +123,7 @@ if (!class_exists('badges')) {
             $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name" value="'.$row->member_name.'"></td></tr>';
             $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title" value="'.$row->member_title.'"></td></tr>';
             $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_member_link" value="'.$row->member_link.'"></td></tr>';
+            $output .= '<tr><td>'.'Badges:'.'</td><td><input style="width: 100%" type="text" name="_badge_count" value="'.$row->badge_count.'"></td></tr>';
             $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
             if ($row->is_teacher) $output .= ' value="true" checked';
             $output .= '></td>';
@@ -179,8 +181,9 @@ if (!class_exists('badges')) {
                         'badge_title' => $_POST['_badge_title'],
                         'badge_link' => $_POST['_badge_link'],
                         'image_link' => $_POST['_image_link'],
+                        'member_count' => $_POST['_member_count'],
                     );
-                    $format = array('%s', '%s', '%s');
+                    $format = array('%s', '%s', '%s', '%d');
                     $insert_id = $wpdb->insert($table, $data, $format);
     /*
                     $CreateCourseAction = new CreateCourseAction();                
@@ -233,6 +236,7 @@ if (!class_exists('badges')) {
                             'badge_title' => $_POST['_badge_title'],
                             'badge_link' => $_POST['_badge_link'],
                             'image_link' => $_POST['_image_link'],
+                            'member_count' => $_POST['_member_count'],
                             //'txid' => $op_result['txid'], 
                         );
                         $where = array('badge_id' => $_id);
@@ -266,6 +270,7 @@ if (!class_exists('badges')) {
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link"></td></tr>';
                 $output .= '<tr><td>'.'Image:'.'</td><td><input style="width: 100%" type="text" name="_image_link"></td></tr>';
+                $output .= '<tr><td>'.'Members:'.'</td><td><input style="width: 100%" type="text" name="_member_count"></td></tr>';
                 $output .= '</tbody></table></figure>';
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
@@ -282,6 +287,7 @@ if (!class_exists('badges')) {
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title" value="'.$row->badge_title.'"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link" value="'.$row->badge_link.'"></td></tr>';
                 $output .= '<tr><td>'.'Image:'.'</td><td><input style="width: 100%" type="text" name="_image_link" value="'.$row->image_link.'"></td></tr>';
+                $output .= '<tr><td>'.'Members:'.'</td><td><input style="width: 100%" type="text" name="_member_count" value="'.$row->member_count.'"></td></tr>';
                 $output .= '</tbody></table></figure>';
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
@@ -312,9 +318,10 @@ if (!class_exists('badges')) {
                         'member_name' => $_POST['_member_name'],
                         'member_title' => $_POST['_member_title'],
                         'member_link' => $_POST['_member_link'],
+                        'badge_count' => $_POST['_badge_count'],
                         'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
                     );
-                    $format = array('%s', '%s', '%s', '%d');
+                    $format = array('%s', '%s', '%s', '%d', '%d');
                     $insert_id = $wpdb->insert($table, $data, $format);
     /*
                     $CreateCourseAction = new CreateCourseAction();                
@@ -361,6 +368,7 @@ if (!class_exists('badges')) {
                 $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name"></td></tr>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_member_link"></td></tr>';
+                $output .= '<tr><td>'.'Badges:'.'</td><td><input style="width: 100%" type="text" name="_badge_count"></td></tr>';
                 $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
                 $output .= '></td>';
                 $output .= '</tbody></table></figure>';
@@ -397,8 +405,10 @@ if (!class_exists('badges')) {
             }            
 
             global $wpdb;
-            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
-            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
+            //$badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
+            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
+            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count", OBJECT );
+            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members ORDER BY badge_count WHERE is_teacher={$isTeacher}", OBJECT );
             if ( $isTeacher=='1' ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
             } else {
@@ -465,7 +475,8 @@ if (!class_exists('badges')) {
         public static function select_badges( $default_id=null ) {
 
             global $wpdb;
-            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
+            //$badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
+            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count", OBJECT );
         
             $output = '<option value="no_select">-- Select an option --</option>';
             foreach ($badges as $index => $badge) {
@@ -494,6 +505,7 @@ if (!class_exists('badges')) {
                 badge_link varchar(255),
                 image_link varchar(255),
                 txid varchar(255),
+                member_count int,
                 PRIMARY KEY  (badge_id)
             ) $charset_collate;";        
             dbDelta($sql);
@@ -505,6 +517,7 @@ if (!class_exists('badges')) {
                 member_link varchar(255),
                 is_teacher boolean,
                 txid varchar(255),
+                badge_count int,
                 PRIMARY KEY  (member_id)
             ) $charset_collate;";        
             dbDelta($sql);
