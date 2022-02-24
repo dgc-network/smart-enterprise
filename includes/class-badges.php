@@ -115,7 +115,7 @@ if (!class_exists('badges')) {
              */
             global $wpdb;
             $row = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}members WHERE member_id = {$_id}", OBJECT );
-            $output  = '<h2>人員維護</h2>';
+            $output  = '<h2>人員證照維護</h2>';
             $output .= '<form method="post">';
             $output .= '<input type="hidden" value="edit" name="edit_mode">';
             $output .= '<input type="hidden" value="'.$_id.'" name="_id">';
@@ -126,7 +126,8 @@ if (!class_exists('badges')) {
             $output .= '<tr><td>'.'Badges:'.'</td><td><input style="width: 100%" type="text" name="_badge_count" value="'.$row->badge_count.'"></td></tr>';
             $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
             if ($row->is_teacher) $output .= ' value="true" checked';
-            $output .= '></td>';
+            $output .= '></td></tr>';
+            $output .= '</tbody></table></figure>';
 
             /** 
              * member_badges body
@@ -311,8 +312,6 @@ if (!class_exists('badges')) {
             if( isset($_POST['submit_action']) ) {
 
                 if( $_POST['submit_action']=='Create' ) {
-                    //return $_POST['_badge_count'];
-        
                     global $wpdb;          
                     $table = $wpdb->prefix.'members';
                     $data = array(
@@ -320,10 +319,10 @@ if (!class_exists('badges')) {
                         'member_title' => $_POST['_member_title'],
                         'member_link' => $_POST['_member_link'],
                         'badge_count' => $_POST['_badge_count'],
-                        'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
+                        //'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
+                        'is_teacher' => $_POST['_is_teacher'],
                     );
                     $format = array('%s', '%s', '%s', '%d', '%d');
-                    //$format = array('%s', '%s', '%s', '%d');
                     $insert_id = $wpdb->insert($table, $data, $format);
     /*
                     $CreateCourseAction = new CreateCourseAction();                
@@ -410,7 +409,6 @@ if (!class_exists('badges')) {
             //$badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
             //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count DESC", OBJECT );
-            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members ORDER BY badge_count DESC WHERE is_teacher={$isTeacher}", OBJECT );
             $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher} ORDER BY badge_count DESC ", OBJECT );
             if ( $isTeacher=='1' ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
