@@ -311,6 +311,7 @@ if (!class_exists('badges')) {
             if( isset($_POST['submit_action']) ) {
 
                 if( $_POST['submit_action']=='Create' ) {
+                    return $_POST['_badge_count'];
         
                     global $wpdb;          
                     $table = $wpdb->prefix.'members';
