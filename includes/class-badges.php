@@ -311,7 +311,7 @@ if (!class_exists('badges')) {
             if( isset($_POST['submit_action']) ) {
 
                 if( $_POST['submit_action']=='Create' ) {
-                    return $_POST['_badge_count'];
+                    //return $_POST['_badge_count'];
         
                     global $wpdb;          
                     $table = $wpdb->prefix.'members';
@@ -319,10 +319,11 @@ if (!class_exists('badges')) {
                         'member_name' => $_POST['_member_name'],
                         'member_title' => $_POST['_member_title'],
                         'member_link' => $_POST['_member_link'],
-                        'badge_count' => $_POST['_badge_count'],
+                        //'badge_count' => $_POST['_badge_count'],
                         'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
                     );
-                    $format = array('%s', '%s', '%s', '%d', '%d');
+                    //$format = array('%s', '%s', '%s', '%d', '%d');
+                    $format = array('%s', '%s', '%s', '%d');
                     $insert_id = $wpdb->insert($table, $data, $format);
     /*
                     $CreateCourseAction = new CreateCourseAction();                
