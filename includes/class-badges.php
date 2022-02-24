@@ -408,9 +408,10 @@ if (!class_exists('badges')) {
 
             global $wpdb;
             //$badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
-            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
+            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count DESC", OBJECT );
             //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members ORDER BY badge_count DESC WHERE is_teacher={$isTeacher}", OBJECT );
+            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher} ORDER BY badge_count DESC ", OBJECT );
             if ( $isTeacher=='1' ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
             } else {
