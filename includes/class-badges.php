@@ -319,11 +319,11 @@ if (!class_exists('badges')) {
                         'member_name' => $_POST['_member_name'],
                         'member_title' => $_POST['_member_title'],
                         'member_link' => $_POST['_member_link'],
-                        //'badge_count' => $_POST['_badge_count'],
+                        'badge_count' => $_POST['_badge_count'],
                         'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
                     );
-                    //$format = array('%s', '%s', '%s', '%d', '%d');
-                    $format = array('%s', '%s', '%s', '%d');
+                    $format = array('%s', '%s', '%s', '%d', '%d');
+                    //$format = array('%s', '%s', '%s', '%d');
                     $insert_id = $wpdb->insert($table, $data, $format);
     /*
                     $CreateCourseAction = new CreateCourseAction();                
@@ -408,9 +408,9 @@ if (!class_exists('badges')) {
 
             global $wpdb;
             //$badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
-            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
+            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
             $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count DESC", OBJECT );
-            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members ORDER BY badge_count DESC WHERE is_teacher={$isTeacher}", OBJECT );
+            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members ORDER BY badge_count DESC WHERE is_teacher={$isTeacher}", OBJECT );
             if ( $isTeacher=='1' ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
             } else {
