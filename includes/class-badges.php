@@ -123,7 +123,7 @@ if (!class_exists('badges')) {
             $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name" value="'.$row->member_name.'"></td></tr>';
             $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title" value="'.$row->member_title.'"></td></tr>';
             $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_member_link" value="'.$row->member_link.'"></td></tr>';
-            $output .= '<tr><td>'.'Badges:'.'</td><td><input style="width: 100%" type="text" name="_badge_count" value="'.$row->badge_count.'"></td></tr>';
+            $output .= '<tr><td>'.'Order:'.'</td><td><input style="width: 100%" type="text" name="_badge_count" value="'.$row->badge_count.'"></td></tr>';
             $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
             if ($row->is_teacher) $output .= ' value="true" checked';
             $output .= '></td></tr>';
@@ -271,7 +271,7 @@ if (!class_exists('badges')) {
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link"></td></tr>';
                 $output .= '<tr><td>'.'Image:'.'</td><td><input style="width: 100%" type="text" name="_image_link"></td></tr>';
-                $output .= '<tr><td>'.'Members:'.'</td><td><input style="width: 100%" type="text" name="_member_count"></td></tr>';
+                $output .= '<tr><td>'.'Order:'.'</td><td><input style="width: 100%" type="text" name="_member_count"></td></tr>';
                 $output .= '</tbody></table></figure>';
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
@@ -288,7 +288,7 @@ if (!class_exists('badges')) {
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_badge_title" value="'.$row->badge_title.'"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_badge_link" value="'.$row->badge_link.'"></td></tr>';
                 $output .= '<tr><td>'.'Image:'.'</td><td><input style="width: 100%" type="text" name="_image_link" value="'.$row->image_link.'"></td></tr>';
-                $output .= '<tr><td>'.'Members:'.'</td><td><input style="width: 100%" type="text" name="_member_count" value="'.$row->member_count.'"></td></tr>';
+                $output .= '<tr><td>'.'Order:'.'</td><td><input style="width: 100%" type="text" name="_member_count" value="'.$row->member_count.'"></td></tr>';
                 $output .= '</tbody></table></figure>';
                 $output .= '<div class="wp-block-buttons">';
                 $output .= '<div class="wp-block-button">';
@@ -369,7 +369,7 @@ if (!class_exists('badges')) {
                 $output .= '<tr><td>'.'Name:'.'</td><td><input style="width: 100%" type="text" name="_member_name"></td></tr>';
                 $output .= '<tr><td>'.'Title:'.'</td><td><input style="width: 100%" type="text" name="_member_title"></td></tr>';
                 $output .= '<tr><td>'.'Link:'.'</td><td><input style="width: 100%" type="text" name="_member_link"></td></tr>';
-                $output .= '<tr><td>'.'Badges:'.'</td><td><input style="width: 100%" type="text" name="_badge_count"></td></tr>';
+                $output .= '<tr><td>'.'Order:'.'</td><td><input style="width: 100%" type="text" name="_badge_count"></td></tr>';
                 $output .= '<tr><td>'.'is Teacher:'.'<td><input type="checkbox" name="_is_teacher"';
                 $output .= '></td>';
                 $output .= '</tbody></table></figure>';
@@ -408,8 +408,10 @@ if (!class_exists('badges')) {
             global $wpdb;
             //$badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
             //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher}", OBJECT );
-            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count DESC", OBJECT );
-            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher} ORDER BY badge_count DESC ", OBJECT );
+            //$badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count DESC", OBJECT );
+            //$members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher} ORDER BY badge_count DESC ", OBJECT );
+            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count", OBJECT );
+            $members = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}members WHERE is_teacher={$isTeacher} ORDER BY badge_count", OBJECT );
             if ( $isTeacher=='1' ) {
                 $output  = '<h2>教師考取相關證照紀錄</h2>';
             } else {
@@ -477,7 +479,8 @@ if (!class_exists('badges')) {
 
             global $wpdb;
             //$badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges", OBJECT );
-            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count DESC", OBJECT );
+            //$badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count DESC", OBJECT );
+            $badges = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}badges ORDER BY member_count", OBJECT );
         
             $output = '<option value="no_select">-- Select an option --</option>';
             foreach ($badges as $index => $badge) {
