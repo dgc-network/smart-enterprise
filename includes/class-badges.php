@@ -319,8 +319,8 @@ if (!class_exists('badges')) {
                         'member_title' => $_POST['_member_title'],
                         'member_link' => $_POST['_member_link'],
                         'badge_count' => $_POST['_badge_count'],
-                        //'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
-                        'is_teacher' => $_POST['_is_teacher'],
+                        'is_teacher' => rest_sanitize_boolean($_POST['_is_teacher']),
+                        //'is_teacher' => $_POST['_is_teacher'],
                     );
                     $format = array('%s', '%s', '%s', '%d', '%d');
                     $insert_id = $wpdb->insert($table, $data, $format);
